@@ -865,7 +865,6 @@ function initExtraFields() {
 
   // --- Checkbox → conditional row toggles ---
   const condPairs = [
-    ['ef_Firm_Income_Considered', 'ef_row_All_Partners'],
     ['ef_Guarantor_Required',     'ef_row_Guarantor_Name'],
     ['ef_Non_RERA_Project',       'ef_row_Company_Exposure'],
   ];
