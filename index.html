@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniFin Digital LOS - Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ===== TOP HEADER ===== -->
+  <header class="top-header">
+    <div class="header-left">
+      <span class="status-dot"></span>
+      <span>OmniFin Digital LOS - (Deal Capturing)</span>
+    </div>
+    <div class="header-center">
+      <span class="logo-text">CAPITAL <span>I</span>NDIA</span>
+      <span class="logo-subtitle">Home Loans</span>
+    </div>
+    <div class="header-right">
+      <span class="user-icon">U</span>
+      <span>USER MORE610(MORE610)</span>
+    </div>
+  </header>
+
+  <!-- ===== TAB NAVIGATION ===== -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="predeal">Pre-Deal Capturing</button>
+    <button class="tab-btn" data-tab="cam-alloc">CAM Allocation</button>
+    <button class="tab-btn" data-tab="cam">CAM Sheet</button>
+  </nav>
+
+  <!-- ===== ACTION BAR: Pre-Deal ===== -->
+  <div class="action-bar active" id="actionbar-predeal">
+    <div class="bar-left">
+      <span>Pre-Deal</span>
+      <span class="bar-icon">&#8592;</span>
+      <span class="bar-icon">&#9776;</span>
+    </div>
+    <div class="bar-center">Deal No: HDLUSLHOF0036117</div>
+    <div class="bar-right">
+      <button class="bar-btn reject">&#10006; <span class="btn-label">Reject Case</span></button>
+      <button class="bar-btn">&#10067; <span class="btn-label">Query</span></button>
+      <button class="bar-btn primary-action" id="btn-send-cam-sheet" title="Send To Cam Sheet">&#9993; <span class="btn-label">Send To Cam Sheet</span></button>
+      <button class="bar-btn">&#128065; <span class="btn-label">Preview</span></button>
+      <button class="bar-btn"><span class="btn-label">Imd View</span></button>
+    </div>
+  </div>
+
+  <!-- ===== ACTION BAR: CAM Allocation ===== -->
+  <div class="action-bar" id="actionbar-cam-alloc">
+    <div class="bar-left">
+      <span>CAM Allocation</span>
+      <span class="bar-icon">&#8592;</span>
+      <span class="bar-icon">&#9776;</span>
+    </div>
+    <div class="bar-center">Deal No: HDLUSLHOF0036117</div>
+    <div class="bar-right">
+      <button class="bar-btn">&#128065; <span class="btn-label">Preview</span></button>
+    </div>
+  </div>
+
+  <!-- ===== ACTION BAR: CAM Sheet ===== -->
+  <div class="action-bar" id="actionbar-cam">
+    <div class="bar-left">
+      <span>CAM Sheet</span>
+      <span class="bar-icon">&#8592;</span>
+      <span class="bar-icon">&#9776;</span>
+    </div>
+    <div class="bar-center">Deal No: HDLHFLMMR0015649</div>
+    <div class="bar-right">
+      <button class="bar-btn reject">&#10006; <span class="btn-label">Reject Case</span></button>
+      <button class="bar-btn">&#10067; <span class="btn-label">Query</span></button>
+      <button class="bar-btn primary-action" id="btn-send-approval" title="Send for Approval">&#9993; <span class="btn-label">Send for Approval</span></button>
+      <button class="bar-btn">&#128065; <span class="btn-label">Preview</span></button>
+      <button class="bar-btn"><span class="btn-label">2nd View</span></button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <div class="main-layout">
+
+    <!-- ===== SIDEBAR: Pre-Deal ===== -->
+    <aside class="sidebar active" id="sidebar-predeal">
+      <div class="nav-item active" data-page="predeal-source">
+        <span class="nav-icon">S</span>
+        <span class="nav-label">Source Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-personal">
+        <span class="nav-icon">P</span>
+        <span class="nav-label">Personal Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-loan">
+        <span class="nav-icon">L</span>
+        <span class="nav-label">Loan Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-charges">
+        <span class="nav-icon">C</span>
+        <span class="nav-label">Charges Details</span>
+      </div>
+      <div class="nav-item" data-page="predeal-asset">
+        <span class="nav-icon">A</span>
+        <span class="nav-label">Asset/Collateral Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-background">
+        <span class="nav-icon">B</span>
+        <span class="nav-label">Background Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-bank">
+        <span class="nav-icon">B</span>
+        <span class="nav-label">Bank Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-documents">
+        <span class="nav-icon">D</span>
+        <span class="nav-label">Documents</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="predeal-uploaded">
+        <span class="nav-icon">U</span>
+        <span class="nav-label">Uploaded Documents</span>
+      </div>
+      <div class="nav-item" data-page="predeal-cibil">
+        <span class="nav-icon">M</span>
+        <span class="nav-label">Manual CIBIL</span>
+      </div>
+      <div class="nav-item" data-page="predeal-dedupe">
+        <span class="nav-icon">D</span>
+        <span class="nav-label">Dedupe Referral</span>
+      </div>
+      <div class="nav-item" data-page="predeal-bre">
+        <span class="nav-icon new-item">&#10003;</span>
+        <span class="nav-label">Check Eligibility (Pre-Deal BRE)</span>
+      </div>
+    </aside>
+
+    <!-- ===== SIDEBAR: CAM Allocation ===== -->
+    <aside class="sidebar" id="sidebar-cam-alloc">
+      <div class="nav-item active">
+        <span class="nav-icon">A</span>
+        <span class="nav-label">CAM Allocation</span>
+      </div>
+    </aside>
+
+    <!-- ===== SIDEBAR: CAM Sheet ===== -->
+    <aside class="sidebar" id="sidebar-cam">
+      <div class="nav-item active" data-page="cam-personal">
+        <span class="nav-icon">P</span>
+        <span class="nav-label">Personal Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-loan">
+        <span class="nav-icon">L</span>
+        <span class="nav-label">Loan Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-charges">
+        <span class="nav-icon">C</span>
+        <span class="nav-label">Charges Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-installment">
+        <span class="nav-icon">I</span>
+        <span class="nav-label">Installment Details</span>
+      </div>
+      <div class="nav-item" data-page="cam-other-charges">
+        <span class="nav-icon">O</span>
+        <span class="nav-label">Other Charges Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-repayment">
+        <span class="nav-icon">R</span>
+        <span class="nav-label">Repayment Details</span>
+      </div>
+      <div class="nav-item" data-page="cam-insurance">
+        <span class="nav-icon">I</span>
+        <span class="nav-label">Insurance Details</span>
+      </div>
+      <div class="nav-item" data-page="cam-asset">
+        <span class="nav-icon">A</span>
+        <span class="nav-label">Asset/Collateral Details</span>
+      </div>
+      <div class="nav-item" data-page="cam-background">
+        <span class="nav-icon">B</span>
+        <span class="nav-label">Background Details</span>
+      </div>
+      <div class="nav-item" data-page="cam-bank">
+        <span class="nav-icon">B</span>
+        <span class="nav-label">Bank Details</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-special">
+        <span class="nav-icon">S</span>
+        <span class="nav-label">Special Conditions</span>
+      </div>
+      <div class="nav-item" data-page="cam-uploaded">
+        <span class="nav-icon">U</span>
+        <span class="nav-label">Uploaded Documents</span>
+      </div>
+      <div class="nav-item" data-page="cam-verif-init">
+        <span class="nav-icon">V</span>
+        <span class="nav-label">Verification Initiation</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-verif-done">
+        <span class="nav-icon">V</span>
+        <span class="nav-label">Verification Initiated</span>
+        <span class="nav-check">&#10004;</span>
+      </div>
+      <div class="nav-item" data-page="cam-financial">
+        <span class="nav-icon">F</span>
+        <span class="nav-label">Financial</span>
+      </div>
+      <div class="nav-item" data-page="cam-fundflow">
+        <span class="nav-icon">F</span>
+        <span class="nav-label">FundFlow</span>
+      </div>
+      <div class="nav-item" data-page="cam-cibil">
+        <span class="nav-icon">M</span>
+        <span class="nav-label">Manual CIBIL</span>
+      </div>
+      <!-- NEW ITEMS per CAM-BRE.md -->
+      <div class="nav-item" data-page="cam-extra-fields">
+        <span class="nav-icon new-item">E</span>
+        <span class="nav-label">Extra Fields</span>
+      </div>
+      <div class="nav-item" data-page="cam-bre">
+        <span class="nav-icon new-item">&#10003;</span>
+        <span class="nav-label">Check Eligibility (CAM BRE)</span>
+      </div>
+      <div class="nav-item" data-page="cam-deviations">
+        <span class="nav-icon new-item">D</span>
+        <span class="nav-label">Deviations</span>
+      </div>
+    </aside>
+
+    <!-- ===== CONTENT AREA ===== -->
+    <div class="content-area">
+
+      <!-- =============================================
+           PRE-DEAL CONTENT PANELS
+           ============================================= -->
+
+      <!-- Pre-Deal: Source Details (Default) -->
+      <div class="content-panel active" id="page-predeal-source">
+        <div class="section-header">SOURCE DETAILS (36117)</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Lead No</label>
+            <input type="text" value="" readonly>
+          </div>
+          <div class="form-group">
+            <label>Deal No</label>
+            <input type="text" value="HDLUSLHOF0036117" readonly>
+          </div>
+          <div class="form-group">
+            <label>Application Form No <span class="required">*</span></label>
+            <input type="text" value="WEB-MS-MORE610-20250923153150" readonly>
+          </div>
+          <div class="form-group">
+            <label>Date &amp; Time Of Receipt <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="text" value="01/08/2025">
+              <span class="input-icon">&#128197;</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Date Encoded <span class="required">*</span></label>
+            <input type="text" value="23/09/2025" readonly>
+          </div>
+          <div class="form-group">
+            <label>Deal Category <span class="required">*</span></label>
+            <select>
+              <option selected>GENERAL</option>
+              <option>PRIORITY</option>
+              <option>STAFF</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Branch</label>
+            <input type="text" value="HEAD OFFICE" readonly>
+          </div>
+          <div class="form-group">
+            <label>Generated By</label>
+            <input type="text" value="OTHERS" readonly>
+          </div>
+          <div class="form-group">
+            <label>Relationship Officer(RO)</label>
+            <div class="input-with-icon">
+              <input type="text" value="">
+              <span class="input-icon">&#128269;</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Relationship Manager/Team Leader <span class="required">*</span></label>
+            <select>
+              <option selected>BRANCH WALKIN</option>
+              <option>DIRECT</option>
+              <option>DSA</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Source</label>
+            <select>
+              <option selected>BRANCH WALKIN</option>
+              <option>DIRECT</option>
+              <option>DSA</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Source Description<span class="required">*</span></label>
+            <input type="text" value="sdvc">
+          </div>
+          <div class="form-group">
+            <label>Source BM Name</label>
+            <input type="text" value="">
+          </div>
+          <div class="form-group">
+            <label>TL Name</label>
+            <input type="text" value="">
+          </div>
+          <div class="form-group">
+            <label>Referred By</label>
+            <input type="text" value="">
+          </div>
+          <div class="form-group">
+            <label>Primary Lending Institutions</label>
+            <input type="text" value="">
+          </div>
+          <div class="form-group">
+            <label>Area Code</label>
+            <select>
+              <option selected>--Select--</option>
+              <option>North</option>
+              <option>South</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Case Visited By</label>
+            <input type="text" value="">
+          </div>
+          <div class="form-group" style="grid-column: 1 / span 2;">
+            <label>Author Remarks</label>
+            <textarea>Maker Remark</textarea>
+            <div style="font-size:10px; color:#999; margin-top:2px;">Maximum Allowed Character 250</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pre-Deal: Generic placeholder pages -->
+      <div class="content-panel" id="page-predeal-personal">
+        <div class="section-header">PERSONAL DETAILS</div>
+        <div class="form-grid">
+          <div class="form-group"><label>First Name</label><input type="text" value="John"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" value="Doe"></div>
+          <div class="form-group"><label>Date of Birth</label><input type="text" value="15/03/1990"></div>
+          <div class="form-group"><label>PAN Number</label><input type="text" value="ABCPD1234F"></div>
+          <div class="form-group"><label>Aadhar Number</label><input type="text" value="XXXX XXXX 4567"></div>
+          <div class="form-group"><label>Mobile</label><input type="text" value="9876543210"></div>
+        </div>
+      </div>
+      <div class="content-panel" id="page-predeal-loan">
+        <div class="section-header">LOAN DETAILS</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Loan Amount Requested</label><input type="text" value="25,00,000"></div>
+          <div class="form-group"><label>Loan Tenure (months)</label><input type="text" value="240"></div>
+          <div class="form-group"><label>Rate of Interest</label><input type="text" value="9.5%"></div>
+          <div class="form-group"><label>Loan Type</label><select><option selected>Home Loan</option><option>LAP</option></select></div>
+          <div class="form-group"><label>Purpose</label><input type="text" value="Purchase of Flat"></div>
+          <div class="form-group"><label>EMI</label><input type="text" value="23,282" readonly></div>
+        </div>
+      </div>
+      <div class="content-panel" id="page-predeal-charges"><div class="section-header">CHARGES DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Charges details form content</div></div>
+      <div class="content-panel" id="page-predeal-asset"><div class="section-header">ASSET/COLLATERAL DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Asset/Collateral details form content</div></div>
+      <div class="content-panel" id="page-predeal-background"><div class="section-header">BACKGROUND DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Background details form content</div></div>
+      <div class="content-panel" id="page-predeal-bank"><div class="section-header">BANK DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Bank details form content</div></div>
+      <div class="content-panel" id="page-predeal-documents"><div class="section-header">DOCUMENTS</div><div style="padding:40px; text-align:center; color:#999;">Documents form content</div></div>
+      <div class="content-panel" id="page-predeal-uploaded"><div class="section-header">UPLOADED DOCUMENTS</div><div style="padding:40px; text-align:center; color:#999;">Uploaded documents content</div></div>
+      <div class="content-panel" id="page-predeal-cibil"><div class="section-header">MANUAL CIBIL</div><div style="padding:40px; text-align:center; color:#999;">Manual CIBIL content</div></div>
+      <div class="content-panel" id="page-predeal-dedupe"><div class="section-header">DEDUPE REFERRAL</div><div style="padding:40px; text-align:center; color:#999;">Dedupe referral content</div></div>
+
+      <!-- ===== Pre-Deal: Check Eligibility (BRE) Page ===== -->
+      <div class="content-panel" id="page-predeal-bre">
+        <div class="bre-page">
+          <div class="bre-header">
+            <div>
+              <div class="bre-title">Check Eligibility (BRE)</div>
+              <div class="bre-subtitle">Pre-Deal Stage &bull; Deal No: HDLUSLHOF0036117</div>
+            </div>
+            <button class="btn-run-bre" id="btn-run-predeal-bre">&#9654; Run Pre-Deal BRE</button>
+          </div>
+
+          <!-- Empty State -->
+          <div class="bre-empty-state" id="predeal-bre-empty">
+            <div class="empty-icon">&#128202;</div>
+            <div class="empty-title">No BRE Results Yet</div>
+            <div class="empty-text">Run the Pre-Deal BRE to evaluate all applicable business rules and check loan eligibility.</div>
+            <button class="btn btn-primary" id="btn-run-predeal-bre-2">&#9654; Run Pre-Deal BRE</button>
+          </div>
+
+          <!-- BRE Results (dynamically rendered by JS) -->
+          <div class="bre-results" id="predeal-bre-results">
+            <div id="predeal-bre-dynamic-content">
+              <!-- Rendered by renderPreDealBREResults() -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- =============================================
+           CAM SHEET CONTENT PANELS
+           ============================================= -->
+
+      <!-- CAM: Personal Details (Default) -->
+      <div class="content-panel" id="page-cam-personal">
+        <div class="section-header">PERSONAL DETAILS</div>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Customer Id</th>
+                <th>Pan Name</th>
+                <th>Customer Role</th>
+                <th>Customer Type</th>
+                <th>Existing Customer</th>
+                <th>Act...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>33264</td>
+                <td>33264_Name</td>
+                <td>APPLICANT</td>
+                <td>Individual</td>
+                <td>No</td>
+                <td class="cell-center">&#9744;</td>
+              </tr>
+              <tr>
+                <td>93266</td>
+                <td>33265_Name</td>
+                <td>CO APPLICANT</td>
+                <td>Individual</td>
+                <td>No</td>
+                <td class="cell-center">&#9744;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-actions">
+          <button class="btn-add">Add More</button>
+        </div>
+
+        <div class="section-header" style="margin-top:8px;">GROUP EXPOSURE</div>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Loan No</th>
+                <th>Pan Name</th>
+                <th>Loan Status</th>
+                <th>Disbursal Status</th>
+                <th>First EMI</th>
+                <th>Last EMI</th>
+                <th>Role</th>
+                <th>Loan Balance Principal</th>
+                <th>Loan Overdue Amo...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HDLHFLMMR0015649</td>
+                <td>33264_Name</td>
+                <td>Forward</td>
+                <td>NA</td>
+                <td>10-04-2022</td>
+                <td>10-04-2037</td>
+                <td>Applicant</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>HDLHFLMMR0015649</td>
+                <td>33265_Name</td>
+                <td>Forward</td>
+                <td>NA</td>
+                <td>10-04-2022</td>
+                <td>10-04-2037</td>
+                <td>Co-Applicant</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CAM: Generic placeholder pages -->
+      <div class="content-panel" id="page-cam-loan"><div class="section-header">LOAN DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Loan details form content</div></div>
+      <div class="content-panel" id="page-cam-charges"><div class="section-header">CHARGES DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Charges details form content</div></div>
+      <div class="content-panel" id="page-cam-installment"><div class="section-header">INSTALLMENT DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Installment details form content</div></div>
+      <div class="content-panel" id="page-cam-other-charges"><div class="section-header">OTHER CHARGES DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Other charges details form content</div></div>
+      <div class="content-panel" id="page-cam-repayment"><div class="section-header">REPAYMENT DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Repayment details form content</div></div>
+      <div class="content-panel" id="page-cam-insurance"><div class="section-header">INSURANCE DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Insurance details form content</div></div>
+      <div class="content-panel" id="page-cam-asset"><div class="section-header">ASSET/COLLATERAL DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Asset/Collateral details form content</div></div>
+      <div class="content-panel" id="page-cam-background"><div class="section-header">BACKGROUND DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Background details form content</div></div>
+      <div class="content-panel" id="page-cam-bank"><div class="section-header">BANK DETAILS</div><div style="padding:40px; text-align:center; color:#999;">Bank details form content</div></div>
+      <div class="content-panel" id="page-cam-special"><div class="section-header">SPECIAL CONDITIONS</div><div style="padding:40px; text-align:center; color:#999;">Special conditions form content</div></div>
+      <div class="content-panel" id="page-cam-uploaded"><div class="section-header">UPLOADED DOCUMENTS</div><div style="padding:40px; text-align:center; color:#999;">Uploaded documents content</div></div>
+      <div class="content-panel" id="page-cam-verif-init"><div class="section-header">VERIFICATION INITIATION</div><div style="padding:40px; text-align:center; color:#999;">Verification initiation content</div></div>
+      <div class="content-panel" id="page-cam-verif-done"><div class="section-header">VERIFICATION INITIATED</div><div style="padding:40px; text-align:center; color:#999;">Verification initiated content</div></div>
+      <div class="content-panel" id="page-cam-financial"><div class="section-header">FINANCIAL</div><div style="padding:40px; text-align:center; color:#999;">Financial content</div></div>
+      <div class="content-panel" id="page-cam-fundflow"><div class="section-header">FUNDFLOW</div><div style="padding:40px; text-align:center; color:#999;">FundFlow content</div></div>
+      <div class="content-panel" id="page-cam-cibil"><div class="section-header">MANUAL CIBIL</div><div style="padding:40px; text-align:center; color:#999;">Manual CIBIL content</div></div>
+
+      <!-- ===== CAM: Extra Fields Page ===== -->
+      <div class="content-panel" id="page-cam-extra-fields">
+        <div class="extra-fields-page">
+          <div class="bre-header">
+            <div>
+              <div class="bre-title">Extra Fields</div>
+              <div class="bre-subtitle">Additional details required for CAM BRE evaluation</div>
+            </div>
+          </div>
+
+          <!-- Row 1: Case Setup + Applicant & Co-Applicant Profile -->
+          <div class="extra-fields-row">
+            <div class="extra-section">
+              <div class="extra-section-header"><span>1 &mdash; Case Setup</span></div>
+              <div class="extra-section-body">
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                  <div class="form-group">
+                    <label>Co-applicant Count</label>
+                    <select id="ef_CoApplicant_Count">
+                      <option value="0">0</option><option value="1">1</option>
+                      <option value="2" selected>2</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ef-checkbox-grid">
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Has_Credit_Life_Insurance"><label for="ef_Has_Credit_Life_Insurance">Credit Life Insurance</label></div>
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_Third_Dwelling_Unit"><label for="ef_Is_Third_Dwelling_Unit">Third Dwelling Unit</label></div>
+                </div>
+                <div id="ef_income_considered_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
+                  <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Income Considered</label></div>
+                  <div class="ef-checkbox-item" id="ef_ic_group_1"><input type="checkbox" id="ef_Income_CA1" checked><label for="ef_Income_CA1">Co-applicant 1</label></div>
+                  <div class="ef-checkbox-item" id="ef_ic_group_2"><input type="checkbox" id="ef_Income_CA2"><label for="ef_Income_CA2">Co-applicant 2</label></div>
+                  <div class="ef-checkbox-item" id="ef_ic_group_3"><input type="checkbox" id="ef_Income_CA3"><label for="ef_Income_CA3">Co-applicant 3</label></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="extra-section">
+              <div class="extra-section-header"><span>2 &mdash; Applicant &amp; Co-applicant Profile</span></div>
+              <div class="extra-section-body">
+                <div class="ef-checkbox-grid">
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Firm_Income_Considered"><label for="ef_Firm_Income_Considered">Firm Income Considered</label></div>
+                </div>
+                <div class="ef-cond-row" id="ef_row_All_Partners">
+                  <div class="ef-checkbox-item" style="padding: 4px 12px;">
+                    <input type="checkbox" id="ef_All_Partners_Are_Applicants">
+                    <label for="ef_All_Partners_Are_Applicants">All Partners Are Applicants</label>
+                  </div>
+                </div>
+                <div class="data-table-wrapper" style="margin-top: 8px;">
+                  <table class="data-table">
+                    <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
+                    <tbody>
+                      <tr><td>Having Govt. Pension</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Govt_Pension_App"></td>
+                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA1"></td>
+                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA2"></td>
+                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA3"></td></tr>
+                      <tr><td>Defense Employee</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Defense_App"></td>
+                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Defense_CA1"></td>
+                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Defense_CA2"></td>
+                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Defense_CA3"></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Is Only Child per CA (absorbed from old Section 7) -->
+                <div id="ef_only_child_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
+                  <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Is Only Child</label></div>
+                  <div class="ef-checkbox-item" id="ef_oc_group_1"><input type="checkbox" id="ef_CA_OC1"><label for="ef_CA_OC1">Co-applicant 1</label></div>
+                  <div class="ef-checkbox-item" id="ef_oc_group_2"><input type="checkbox" id="ef_CA_OC2"><label for="ef_CA_OC2">Co-applicant 2</label></div>
+                  <div class="ef-checkbox-item" id="ef_oc_group_3"><input type="checkbox" id="ef_CA_OC3"><label for="ef_CA_OC3">Co-applicant 3</label></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Verification + Bureau & Credit History -->
+          <div class="extra-fields-row">
+            <div class="extra-section">
+              <div class="extra-section-header"><span>3 &mdash; Verification</span></div>
+              <div class="extra-section-body" style="padding: 0;">
+                <div style="padding: 6px 10px; font-size: 10px; color: var(--text-light); background: #f9f9ff; border-bottom: 1px solid var(--border-light);">
+                  Bank Salaried: Residence by Salesperson &bull; Cash Salaried: Residence &amp; Office by Credit Manager &bull; SEP/SENP: Residence &amp; Office by Credit Manager
+                </div>
+                <!-- Residence Visit — for Applicant + all CAs -->
+                <div class="data-table-wrapper">
+                  <table class="data-table">
+                    <thead><tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr></thead>
+                    <tbody>
+                      <tr><td>Residence Visit Done</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Res_Visit_App"></td>
+                        <td class="ef-c1 cell-center"><input type="checkbox" id="ef_Res_Visit_CA1"></td>
+                        <td class="ef-c2 cell-center"><input type="checkbox" id="ef_Res_Visit_CA2"></td>
+                        <td class="ef-c3 cell-center"><input type="checkbox" id="ef_Res_Visit_CA3"></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Office & Employment — for income earners only -->
+                <div style="padding: 4px 10px 2px; font-size: 10px; color: var(--text-light); font-style: italic; border-top: 1px solid var(--border-light);">Office &amp; Employment verification &mdash; income earners only</div>
+                <div class="data-table-wrapper">
+                  <table class="data-table">
+                    <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
+                    <tbody>
+                      <tr><td>Office Visit Done</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Office_Visit_App"></td>
+                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Office_Visit_CA1"></td>
+                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Office_Visit_CA2"></td>
+                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Office_Visit_CA3"></td></tr>
+                      <tr><td>Employment Verified</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Emp_Verified_App"></td>
+                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA1"></td>
+                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA2"></td>
+                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA3"></td></tr>
+                      <tr><td>Employer Visit Photos</td>
+                        <td class="cell-center"><input type="checkbox" id="ef_Emp_Photos_App"></td>
+                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA1"></td>
+                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA2"></td>
+                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA3"></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="extra-section">
+              <div class="extra-section-header"><span>4 &mdash; Bureau &amp; Credit History</span></div>
+              <div class="extra-section-body" style="padding: 0;">
+                <div class="data-table-wrapper">
+                  <table class="data-table" id="ef_tbl_wilful">
+                    <thead>
+                      <tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th><th>Guar</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Wilful Defaulter</td>
+                        <td><select id="ef_WD_App"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                        <td class="ef-c1"><select id="ef_WD_CA1"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                        <td class="ef-c2"><select id="ef_WD_CA2"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                        <td class="ef-c3"><select id="ef_WD_CA3"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                        <td><select id="ef_WD_Guar"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="ef-checkbox-grid" style="padding: 8px 10px;">
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Restructured_History"><label for="ef_Restructured_History">Restructured History</label></div>
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Settlement_History"><label for="ef_Settlement_History">Settlement History</label></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: Income (full width) -->
+          <div class="extra-section">
+            <div class="extra-section-header"><span>5 &mdash; Income (Monthly)</span></div>
+            <div class="extra-section-body" style="padding: 0;">
+              <div class="data-table-wrapper">
+                <table class="data-table" id="ef_tbl_income">
+                  <thead>
+                    <tr><th>Component</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Net Business / Salary</td>
+                      <td><input type="number" min="0" id="ef_I_Net_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Net_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Net_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Net_C3"></td></tr>
+                    <tr class="ef-group-header"><td colspan="5">Other Salary Components</td></tr>
+                    <tr><td>Monthly Incentive</td>
+                      <td><input type="number" min="0" id="ef_I_Inc_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Inc_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Inc_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Inc_C3"></td></tr>
+                    <tr><td>Annual Bonus (&divide;12)</td>
+                      <td><input type="number" min="0" id="ef_I_Bon_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Bon_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Bon_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Bon_C3"></td></tr>
+                    <tr><td>Pension Income</td>
+                      <td><input type="number" min="0" id="ef_I_Pen_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Pen_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Pen_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Pen_C3"></td></tr>
+                    <tr><td>Daily / Travel Allowances</td>
+                      <td><input type="number" min="0" id="ef_I_Alw_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Alw_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Alw_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Alw_C3"></td></tr>
+                    <tr class="ef-group-header"><td colspan="5">Other Income Sources</td></tr>
+                    <tr><td>Rental Income</td>
+                      <td><input type="number" min="0" id="ef_I_Ren_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Ren_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Ren_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Ren_C3"></td></tr>
+                    <tr><td>Dairy Income</td>
+                      <td><input type="number" min="0" id="ef_I_Dai_A" class="ef-dairy" data-p="A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Dai_C1" class="ef-dairy" data-p="C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Dai_C2" class="ef-dairy" data-p="C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Dai_C3" class="ef-dairy" data-p="C3"></td></tr>
+                    <tr><td>Dairy Cattle Count</td>
+                      <td class="ef-cond-cell" id="ef_cc_A"><input type="number" min="0" id="ef_I_Cat_A"></td>
+                      <td class="ef-c1 ef-cond-cell" id="ef_cc_C1"><input type="number" min="0" id="ef_I_Cat_C1"></td>
+                      <td class="ef-c2 ef-cond-cell" id="ef_cc_C2"><input type="number" min="0" id="ef_I_Cat_C2"></td>
+                      <td class="ef-c3 ef-cond-cell" id="ef_cc_C3"><input type="number" min="0" id="ef_I_Cat_C3"></td></tr>
+                    <tr><td>Tuition Income</td>
+                      <td><input type="number" min="0" id="ef_I_Tui_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Tui_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Tui_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Tui_C3"></td></tr>
+                    <tr><td>Other Part Time Income</td>
+                      <td><input type="number" min="0" id="ef_I_PT_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_I_PT_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_I_PT_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_I_PT_C3"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 6: Obligations (full width) — per-person gold/education toggles -->
+          <div class="extra-section">
+            <div class="extra-section-header"><span>6 &mdash; Obligations (Monthly)</span></div>
+            <div class="extra-section-body" style="padding: 0;">
+              <div class="data-table-wrapper">
+                <table class="data-table" id="ef_tbl_obl">
+                  <thead>
+                    <tr><th>Obligation</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Existing EMIs (excl. gold, education)</td>
+                      <td><input type="number" min="0" id="ef_O_EMI_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_O_EMI_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_O_EMI_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_O_EMI_C3"></td></tr>
+                    <tr class="ef-group-header"><td colspan="5">Gold Loan</td></tr>
+                    <tr><td>Any Gold Loan Ongoing?</td>
+                      <td class="cell-center"><input type="checkbox" id="ef_gold_App" class="ef-gold-chk"></td>
+                      <td class="ef-c1 cell-center"><input type="checkbox" id="ef_gold_CA1" class="ef-gold-chk"></td>
+                      <td class="ef-c2 cell-center"><input type="checkbox" id="ef_gold_CA2" class="ef-gold-chk"></td>
+                      <td class="ef-c3 cell-center"><input type="checkbox" id="ef_gold_CA3" class="ef-gold-chk"></td></tr>
+                    <tr class="ef-cond-tr" id="ef_tr_GP"><td>Gold Loan POS</td>
+                      <td><input type="number" min="0" id="ef_O_GP_A" class="ef-gp" data-p="A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_O_GP_C1" class="ef-gp" data-p="C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_O_GP_C2" class="ef-gp" data-p="C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_O_GP_C3" class="ef-gp" data-p="C3"></td></tr>
+                    <tr class="ef-cond-tr" id="ef_tr_GE"><td>Gold Loan EMIs</td>
+                      <td class="ef-cond-cell" id="ef_ge_A"><input type="number" min="0" id="ef_O_GE_A"></td>
+                      <td class="ef-c1 ef-cond-cell" id="ef_ge_C1"><input type="number" min="0" id="ef_O_GE_C1"></td>
+                      <td class="ef-c2 ef-cond-cell" id="ef_ge_C2"><input type="number" min="0" id="ef_O_GE_C2"></td>
+                      <td class="ef-c3 ef-cond-cell" id="ef_ge_C3"><input type="number" min="0" id="ef_O_GE_C3"></td></tr>
+                    <tr class="ef-group-header"><td colspan="5">Education Loan</td></tr>
+                    <tr><td>Any Education Loan Ongoing?</td>
+                      <td class="cell-center"><input type="checkbox" id="ef_edu_App" class="ef-edu-chk"></td>
+                      <td class="ef-c1 cell-center"><input type="checkbox" id="ef_edu_CA1" class="ef-edu-chk"></td>
+                      <td class="ef-c2 cell-center"><input type="checkbox" id="ef_edu_CA2" class="ef-edu-chk"></td>
+                      <td class="ef-c3 cell-center"><input type="checkbox" id="ef_edu_CA3" class="ef-edu-chk"></td></tr>
+                    <tr class="ef-cond-tr" id="ef_tr_Edu"><td>Education Loan EMIs</td>
+                      <td><input type="number" min="0" id="ef_O_Edu_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_O_Edu_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_O_Edu_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_O_Edu_C3"></td></tr>
+                    <tr><td>Total CC Outstanding</td>
+                      <td><input type="number" min="0" id="ef_O_CC_A"></td>
+                      <td class="ef-c1"><input type="number" min="0" id="ef_O_CC_C1"></td>
+                      <td class="ef-c2"><input type="number" min="0" id="ef_O_CC_C2"></td>
+                      <td class="ef-c3"><input type="number" min="0" id="ef_O_CC_C3"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Property & CERSAI + BT / TopUp -->
+          <div class="extra-fields-row">
+            <div class="extra-section">
+              <div class="extra-section-header"><span>7 &mdash; Property &amp; CERSAI</span></div>
+              <div class="extra-section-body">
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                  <div class="form-group">
+                    <label>Residual Life (Years)</label>
+                    <input type="number" min="0" id="ef_Residual_Life_Years">
+                  </div>
+                </div>
+                <div class="form-grid" style="grid-template-columns: 1fr; margin-top: 6px;">
+                  <div class="form-group">
+                    <label>CERSAI Search Done</label>
+                    <select id="ef_CERSAI_Search_Done">
+                      <option value="No">No</option><option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ef-cond-row" id="ef_row_CERSAI_Clear">
+                  <div class="form-group" style="padding: 4px 12px;">
+                    <label>CERSAI Clear</label>
+                    <select id="ef_CERSAI_Clear">
+                      <option value="No">No</option><option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="extra-section">
+              <div class="extra-section-header"><span>8 &mdash; BT/BT+Topup?</span></div>
+              <div class="extra-section-body">
+                <div class="ef-checkbox-grid" style="margin-bottom: 4px;">
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_BT_TopUp"><label for="ef_Is_BT_TopUp">BT/BT+Topup?</label></div>
+                </div>
+                <div class="ef-bt-details" id="ef_bt_details">
+                  <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="form-group"><label>Total Tenure (months)</label><input type="number" min="0" id="ef_BT_Total_Tenure"></div>
+                    <div class="form-group"><label>EMIs Paid (months)</label><input type="number" min="0" id="ef_BT_EMIs_Paid"></div>
+                    <div class="form-group"><label>EMIs Remaining (months)</label><input type="number" min="0" id="ef_BT_EMIs_Remaining"></div>
+                    <div class="form-group"><label>Total Loan Amount</label><input type="number" min="0" id="ef_BT_Total_Loan_Amt"></div>
+                    <div class="form-group"><label>Balance Amount</label><input type="number" min="0" id="ef_BT_Balance_Amt"></div>
+                    <div class="form-group"><label>Bounced EMIs Count</label><input type="number" min="0" id="ef_BT_Bounced_EMIs"></div>
+                    <div class="form-group"><label>Max DPD</label><input type="number" min="0" id="ef_BT_Max_DPD"></div>
+                  </div>
+                  <div class="ef-checkbox-grid">
+                    <div class="ef-checkbox-item"><input type="checkbox" id="ef_Guarantor_Required"><label for="ef_Guarantor_Required">Guarantor Required</label></div>
+                  </div>
+                  <div class="ef-cond-row" id="ef_row_Guarantor_Name">
+                    <div class="form-group" style="padding: 4px 12px;">
+                      <label>Guarantor</label>
+                      <input type="text" id="ef_Guarantor_Name" placeholder="Name">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 4: Guarantor + Project & Exposure -->
+          <div class="extra-fields-row">
+            <div class="extra-section">
+              <div class="extra-section-header"><span>9 &mdash; Guarantor</span></div>
+              <div class="extra-section-body">
+                <div class="form-grid" style="grid-template-columns: 1fr;">
+                  <div class="form-group">
+                    <label>Is this case of Topup with guarantor?</label>
+                    <select id="ef_G_TopUp">
+                      <option value="No">No</option><option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ef-cond-row" id="ef_row_G_Existing">
+                  <div class="form-group" style="padding: 4px 12px;">
+                    <label>The guarantor in existing/running loan is taken as guarantor for this too?</label>
+                    <select id="ef_G_Existing_Guarantor">
+                      <option value="No">No</option><option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="extra-section">
+              <div class="extra-section-header"><span>10 &mdash; Project &amp; Exposure</span></div>
+              <div class="extra-section-body">
+                <div class="ef-checkbox-grid">
+                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Non_RERA_Project"><label for="ef_Non_RERA_Project">Non-RERA Project</label></div>
+                </div>
+                <div class="ef-cond-row" id="ef_row_Company_Exposure">
+                  <div class="form-group" style="padding: 4px 12px;">
+                    <label>Company Exposure (%) in this project</label>
+                    <input type="number" min="0" max="100" step="0.01" id="ef_Company_Exposure_Percent">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="page-actions">
+            <button class="btn btn-success" onclick="saveExtraFields()">&#128190; Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CAM: Check Eligibility (CAM BRE) Page ===== -->
+      <div class="content-panel" id="page-cam-bre">
+        <div class="bre-page">
+          <div class="bre-header">
+            <div>
+              <div class="bre-title">Check Eligibility (CAM BRE)</div>
+              <div class="bre-subtitle">CAM Stage &bull; Deal No: HDLHFLMMR0015649</div>
+            </div>
+            <button class="btn-run-bre" id="btn-run-cam-bre">&#9654; Run CAM BRE</button>
+          </div>
+
+          <!-- Empty State -->
+          <div class="bre-empty-state" id="cam-bre-empty">
+            <div class="empty-icon">&#128202;</div>
+            <div class="empty-title">No CAM BRE Results Yet</div>
+            <div class="empty-text">Run the CAM BRE to evaluate all applicable business rules for the CAM stage.</div>
+            <button class="btn btn-primary" id="btn-run-cam-bre-2">&#9654; Run CAM BRE</button>
+          </div>
+
+          <!-- CAM BRE Results (dynamically rendered by JS) -->
+          <div class="bre-results" id="cam-bre-results">
+            <div id="cam-bre-dynamic-content">
+              <!-- Rendered by renderCamBREResults() -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CAM: Deviations Page ===== -->
+      <div class="content-panel" id="page-cam-deviations">
+        <div class="deviations-page">
+          <div class="deviations-title">Deviations</div>
+
+          <!-- BRE-Identified Deviations (Frozen) -->
+          <div class="deviation-section">
+            <div class="deviation-section-title">
+              BRE-Identified Deviations
+              <span class="frozen-badge">Frozen</span>
+            </div>
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:40px;">&#10003;</th>
+                    <th>ID</th>
+                    <th>Rule Description</th>
+                    <th>L</th>
+                    <th>Actual As Per Case</th>
+                    <th>Justification/Mitigants</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="frozen-row">
+                    <td class="cell-center"><input type="checkbox" checked disabled></td>
+                    <td>B001</td>
+                    <td>Bureau score greater than 0 and less than 650 (Co-Applicant)</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value="Score: 620"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr class="frozen-row">
+                    <td class="cell-center"><input type="checkbox" checked disabled></td>
+                    <td>B002</td>
+                    <td>Overdue/DPD in Bureau for any loan/credit card up to Rs. 10,000 (Co-Applicant)</td>
+                    <td class="cell-center">2</td>
+                    <td><input type="text" value="Rs. 8,000"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr class="frozen-row">
+                    <td class="cell-center"><input type="checkbox" checked disabled></td>
+                    <td>L001</td>
+                    <td>LTV exceeds policy norm by up to 5% (within regulatory limit)</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value="LTV: 83%"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr class="frozen-row">
+                    <td class="cell-center"><input type="checkbox" checked disabled></td>
+                    <td>F001</td>
+                    <td>FOIR exceeds maximum limit by up to 5% based on income slab</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value="FOIR: 53%"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Manual Deviations -->
+          <div class="deviation-section">
+            <div class="deviation-section-title">Manual Deviations</div>
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:40px;">&#10003;</th>
+                    <th>ID</th>
+                    <th>Rule Description</th>
+                    <th>L</th>
+                    <th>Actual As Per Case</th>
+                    <th>Justification/Mitigants</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>6376</td>
+                    <td>Business Continuity proof/ Business stability proof not available</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>B411</td>
+                    <td>Overdue/DPD/Suit Filed/Willful Default seen in Bureau for any loan/issued loan/credit card and where overdue amount does not exceed Rs. 10,000</td>
+                    <td class="cell-center">2</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>5631</td>
+                    <td>BCD Profile - Both business and residence in the same area</td>
+                    <td class="cell-center">2</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>0423</td>
+                    <td>Bureau score is less than 650 (other than 0, -1)</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>E327</td>
+                    <td>Caution Profile</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>E387</td>
+                    <td>CPIPI deposit is negative/refer to credit</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                  <tr>
+                    <td class="cell-center"><input type="checkbox"></td>
+                    <td>D639</td>
+                    <td>IMD Bounced - Initial Money Deposit bounced (Minimum 1 time)</td>
+                    <td class="cell-center">3</td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="page-actions">
+            <button class="btn btn-success" onclick="saveDeviations()">&#128190; Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAM Allocation placeholder -->
+      <div class="content-panel" id="page-cam-alloc">
+        <div style="padding:60px 40px; text-align:center;">
+          <div style="font-size:48px; margin-bottom:16px;">&#128203;</div>
+          <div style="font-size:18px; font-weight:600; color:#333; margin-bottom:8px;">CAM Allocation</div>
+          <div style="font-size:13px; color:#999;">CAM allocation assignment and workflow content</div>
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-layout -->
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="app-footer">
+    &copy; Copyright 2011 Aurionpro Solutions Limited | <a href="#">Terms &amp; Conditions</a>
+  </footer>
+
+</div><!-- /app-container -->
+
+
+<!-- =============================================
+     MODALS / OVERLAYS
+     ============================================= -->
+
+<!-- Generic Modal Overlay Container -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box">
+    <!-- Content inserted dynamically by JS -->
+  </div>
+</div>
+
+<!-- ===== SIMULATOR CONTROL ===== -->
+<button class="sim-toggle-btn" id="sim-toggle" title="BRE Simulator">&#9881;</button>
+<div class="sim-panel" id="sim-panel">
+  <div class="sim-panel-header">
+    <span class="sim-title">BRE Simulator</span>
+    <button class="sim-close" id="sim-close">&times;</button>
+  </div>
+  <div class="sim-panel-body">
+    <div class="sim-section">
+      <div class="sim-section-label">Pre-Deal BRE</div>
+      <div class="sim-options">
+        <button class="sim-option active-passed" data-sim="predeal" data-val="passed">Passed</button>
+        <button class="sim-option active-failed" data-sim="predeal" data-val="failed">Failed</button>
+      </div>
+    </div>
+    <div class="sim-section">
+      <div class="sim-section-label">CAM BRE</div>
+      <div class="sim-options">
+        <button class="sim-option" data-sim="cam" data-val="passed">Passed</button>
+        <button class="sim-option active-deviated" data-sim="cam" data-val="deviated">Deviated</button>
+        <button class="sim-option" data-sim="cam" data-val="failed">Failed</button>
+      </div>
+    </div>
+    <div class="sim-hint">Changes apply on next BRE run or instantly if results are visible</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
