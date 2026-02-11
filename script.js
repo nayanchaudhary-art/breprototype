@@ -896,29 +896,31 @@ function initExtraFields() {
     });
   });
 
-  // --- Gold loan per-person: if ANY checked → show Gold POS + EMI rows ---
-  $$('.ef-gold-chk').forEach(chk => {
-    chk.addEventListener('change', function () {
-      const anyGold = [...$$('.ef-gold-chk')].some(c => c.checked);
-      tog($('#ef_tr_GP'), anyGold);
-      tog($('#ef_tr_GE'), anyGold);
+  // --- Gold loan: per-person toggle for Outstanding + EMI cells ---
+  const goldPersonMap = { ef_gold_App: 'A', ef_gold_CA1: 'C1', ef_gold_CA2: 'C2', ef_gold_CA3: 'C3' };
+  function syncGold() {
+    const anyGold = [...$$('.ef-gold-chk')].some(c => c.checked);
+    tog($('#ef_tr_GP'), anyGold);
+    tog($('#ef_tr_GE'), anyGold);
+    Object.entries(goldPersonMap).forEach(([chkId, p]) => {
+      const checked = $('#' + chkId).checked;
+      tog($('#ef_gp_cell_' + p), checked);
+      tog($('#ef_ge_' + p), checked);
     });
-  });
+  }
+  $$('.ef-gold-chk').forEach(chk => chk.addEventListener('change', syncGold));
 
-  // --- Gold POS > 0 → gold EMI cell (per person) ---
-  $$('.ef-gp').forEach(inp => {
-    inp.addEventListener('input', function () {
-      tog($('#ef_ge_' + this.dataset.p), (+this.value || 0) > 0);
+  // --- Education loan: per-person toggle for EMI cells ---
+  const eduPersonMap = { ef_edu_App: 'A', ef_edu_CA1: 'C1', ef_edu_CA2: 'C2', ef_edu_CA3: 'C3' };
+  function syncEdu() {
+    const anyEdu = [...$$('.ef-edu-chk')].some(c => c.checked);
+    tog($('#ef_tr_Edu'), anyEdu);
+    Object.entries(eduPersonMap).forEach(([chkId, p]) => {
+      const checked = $('#' + chkId).checked;
+      tog($('#ef_edu_cell_' + p), checked);
     });
-  });
-
-  // --- Education loan per-person: if ANY checked → show Education EMI row ---
-  $$('.ef-edu-chk').forEach(chk => {
-    chk.addEventListener('change', function () {
-      const anyEdu = [...$$('.ef-edu-chk')].some(c => c.checked);
-      tog($('#ef_tr_Edu'), anyEdu);
-    });
-  });
+  }
+  $$('.ef-edu-chk').forEach(chk => chk.addEventListener('change', syncEdu));
 
   // Initialize on load
   syncCA();
