@@ -514,22 +514,39 @@ function showPreDealBREPage() {
 // CAM BRE FLOW
 // =============================================
 
-// Single save for all Extra Fields sections
+// --- Sub-tab view switching ---
+function switchBREView(view) {
+  const fieldsTab = document.getElementById('bre-subtab-fields');
+  const resultsTab = document.getElementById('bre-subtab-results');
+  const fieldsView = document.getElementById('cam-bre-fields-view');
+  const resultsView = document.getElementById('cam-bre-results-view');
+
+  if (view === 'results' && !state.camBRERun) return; // block if not run yet
+
+  fieldsTab.classList.toggle('active', view === 'fields');
+  resultsTab.classList.toggle('active', view === 'results');
+  fieldsView.classList.toggle('active', view === 'fields');
+  resultsView.classList.toggle('active', view === 'results');
+}
+
+// Single save for all Extra Fields sections — triggers BRE run
 function saveExtraFields() {
   showModal(`
-    <div class="modal-header">
-      <span class="modal-title">Saved Successfully</span>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-    </div>
     <div class="modal-body">
-      <div class="modal-icon" style="color: var(--success-green);">&#10004;</div>
-      <div class="modal-text">Extra fields saved successfully.</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="closeModal(); runCamBREFromModal();">&#9654; Run CAM BRE</button>
-      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <div class="loading-text">Saving extra fields &amp; generating CAM BRE results...</div>
+      </div>
     </div>
   `);
+
+  setTimeout(() => {
+    state.camBRERun = true;
+    renderCamBREResults();
+    closeModal();
+    showCamBREPage();
+    showCamBREStatusModal('page');
+  }, 2000);
 }
 
 function runCamBREFromPage() {
@@ -572,6 +589,11 @@ function runCamBREFromModal() {
 function showCamBREPage() {
   document.getElementById('cam-bre-empty').style.display = 'none';
   document.getElementById('cam-bre-results').classList.add('active');
+  // Enable results sub-tab and switch to results view
+  const resultsTab = document.getElementById('bre-subtab-results');
+  resultsTab.classList.remove('disabled');
+  document.getElementById('bre-subtab-hint').textContent = '';
+  switchBREView('results');
 }
 
 function showCamBREStatusModal(source) {
