@@ -242,6 +242,16 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { font-size: var(--font-size-md); color: var(--text-secondary); font-weight: 500; }
 
+/* --- BRE Sub-tabs (pill toggle inside CAM BRE page) --- */
+.bre-subtabs { display: flex; gap: 0; margin-bottom: var(--spacing-lg); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; width: fit-content; }
+.bre-subtab { padding: 6px 20px; font-size: var(--font-size-sm); font-weight: 600; background: var(--bg-light); color: var(--text-secondary); border: none; cursor: pointer; transition: all 0.15s; }
+.bre-subtab.active { background: var(--primary-blue); color: var(--text-white); }
+.bre-subtab.disabled { opacity: 0.5; cursor: not-allowed; }
+.bre-subtab.disabled:not(.active) { background: var(--bg-light); color: var(--text-light); }
+.bre-subtab-hint { font-weight: 400; font-style: italic; font-size: var(--font-size-xs); }
+.bre-view { display: none; }
+.bre-view.active { display: block; }
+
 /* --- Extra Fields Page --- */
 .extra-fields-page { padding: var(--spacing-lg); }
 .extra-section { margin-bottom: var(--spacing-xl); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; }
