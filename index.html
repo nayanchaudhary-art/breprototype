@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -228,10 +229,6 @@
         <span class="nav-label">Manual CIBIL</span>
       </div>
       <!-- NEW ITEMS per CAM-BRE.md -->
-      <div class="nav-item" data-page="cam-extra-fields">
-        <span class="nav-icon new-item">E</span>
-        <span class="nav-label">Extra Fields</span>
-      </div>
       <div class="nav-item" data-page="cam-bre">
         <span class="nav-icon new-item">&#10003;</span>
         <span class="nav-label">Check Eligibility (CAM BRE)</span>
@@ -521,387 +518,7 @@
       <div class="content-panel" id="page-cam-fundflow"><div class="section-header">FUNDFLOW</div><div style="padding:40px; text-align:center; color:#999;">FundFlow content</div></div>
       <div class="content-panel" id="page-cam-cibil"><div class="section-header">MANUAL CIBIL</div><div style="padding:40px; text-align:center; color:#999;">Manual CIBIL content</div></div>
 
-      <!-- ===== CAM: Extra Fields Page ===== -->
-      <div class="content-panel" id="page-cam-extra-fields">
-        <div class="extra-fields-page">
-          <div class="bre-header">
-            <div>
-              <div class="bre-title">Extra Fields</div>
-              <div class="bre-subtitle">Additional details required for CAM BRE evaluation</div>
-            </div>
-          </div>
-
-          <!-- Row 1: Case Setup + Applicant & Co-Applicant Profile -->
-          <div class="extra-fields-row">
-            <div class="extra-section">
-              <div class="extra-section-header"><span>1 &mdash; Case Setup</span></div>
-              <div class="extra-section-body">
-                <div class="form-grid" style="grid-template-columns: 1fr;">
-                  <div class="form-group">
-                    <label>Co-applicant Count</label>
-                    <select id="ef_CoApplicant_Count">
-                      <option value="0">0</option><option value="1">1</option>
-                      <option value="2" selected>2</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="ef-checkbox-grid">
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Has_Credit_Life_Insurance"><label for="ef_Has_Credit_Life_Insurance">Credit Life Insurance</label></div>
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_Third_Dwelling_Unit"><label for="ef_Is_Third_Dwelling_Unit">Third Dwelling Unit</label></div>
-                </div>
-                <div id="ef_income_considered_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
-                  <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Income Considered</label></div>
-                  <div class="ef-checkbox-item" id="ef_ic_group_1"><input type="checkbox" id="ef_Income_CA1" checked><label for="ef_Income_CA1">Co-applicant 1</label></div>
-                  <div class="ef-checkbox-item" id="ef_ic_group_2"><input type="checkbox" id="ef_Income_CA2"><label for="ef_Income_CA2">Co-applicant 2</label></div>
-                  <div class="ef-checkbox-item" id="ef_ic_group_3"><input type="checkbox" id="ef_Income_CA3"><label for="ef_Income_CA3">Co-applicant 3</label></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="extra-section">
-              <div class="extra-section-header"><span>2 &mdash; Applicant &amp; Co-applicant Profile</span></div>
-              <div class="extra-section-body">
-                <div class="ef-checkbox-grid">
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Firm_Income_Considered"><label for="ef_Firm_Income_Considered">Firm Income Considered</label></div>
-                </div>
-                <div class="ef-cond-row" id="ef_row_All_Partners">
-                  <div class="ef-checkbox-item" style="padding: 4px 12px;">
-                    <input type="checkbox" id="ef_All_Partners_Are_Applicants">
-                    <label for="ef_All_Partners_Are_Applicants">All Partners Are Applicants</label>
-                  </div>
-                </div>
-                <div class="data-table-wrapper" style="margin-top: 8px;">
-                  <table class="data-table">
-                    <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
-                    <tbody>
-                      <tr><td>Having Govt. Pension</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Govt_Pension_App"></td>
-                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA1"></td>
-                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA2"></td>
-                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA3"></td></tr>
-                      <tr><td>Defense Employee</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Defense_App"></td>
-                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Defense_CA1"></td>
-                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Defense_CA2"></td>
-                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Defense_CA3"></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Is Only Child per CA (absorbed from old Section 7) -->
-                <div id="ef_only_child_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
-                  <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Is Only Child</label></div>
-                  <div class="ef-checkbox-item" id="ef_oc_group_1"><input type="checkbox" id="ef_CA_OC1"><label for="ef_CA_OC1">Co-applicant 1</label></div>
-                  <div class="ef-checkbox-item" id="ef_oc_group_2"><input type="checkbox" id="ef_CA_OC2"><label for="ef_CA_OC2">Co-applicant 2</label></div>
-                  <div class="ef-checkbox-item" id="ef_oc_group_3"><input type="checkbox" id="ef_CA_OC3"><label for="ef_CA_OC3">Co-applicant 3</label></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 2: Verification + Bureau & Credit History -->
-          <div class="extra-fields-row">
-            <div class="extra-section">
-              <div class="extra-section-header"><span>3 &mdash; Verification</span></div>
-              <div class="extra-section-body" style="padding: 0;">
-                <div style="padding: 6px 10px; font-size: 10px; color: var(--text-light); background: #f9f9ff; border-bottom: 1px solid var(--border-light);">
-                  Bank Salaried: Residence by Salesperson &bull; Cash Salaried: Residence &amp; Office by Credit Manager &bull; SEP/SENP: Residence &amp; Office by Credit Manager
-                </div>
-                <!-- Residence Visit — for Applicant + all CAs -->
-                <div class="data-table-wrapper">
-                  <table class="data-table">
-                    <thead><tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr></thead>
-                    <tbody>
-                      <tr><td>Residence Visit Done</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Res_Visit_App"></td>
-                        <td class="ef-c1 cell-center"><input type="checkbox" id="ef_Res_Visit_CA1"></td>
-                        <td class="ef-c2 cell-center"><input type="checkbox" id="ef_Res_Visit_CA2"></td>
-                        <td class="ef-c3 cell-center"><input type="checkbox" id="ef_Res_Visit_CA3"></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Office & Employment — for income earners only -->
-                <div style="padding: 4px 10px 2px; font-size: 10px; color: var(--text-light); font-style: italic; border-top: 1px solid var(--border-light);">Office &amp; Employment verification &mdash; income earners only</div>
-                <div class="data-table-wrapper">
-                  <table class="data-table">
-                    <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
-                    <tbody>
-                      <tr><td>Office Visit Done</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Office_Visit_App"></td>
-                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Office_Visit_CA1"></td>
-                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Office_Visit_CA2"></td>
-                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Office_Visit_CA3"></td></tr>
-                      <tr><td>Employment Verified</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Emp_Verified_App"></td>
-                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA1"></td>
-                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA2"></td>
-                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA3"></td></tr>
-                      <tr><td>Employer Visit Photos</td>
-                        <td class="cell-center"><input type="checkbox" id="ef_Emp_Photos_App"></td>
-                        <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA1"></td>
-                        <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA2"></td>
-                        <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA3"></td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div class="extra-section">
-              <div class="extra-section-header"><span>4 &mdash; Bureau &amp; Credit History</span></div>
-              <div class="extra-section-body" style="padding: 0;">
-                <div class="data-table-wrapper">
-                  <table class="data-table" id="ef_tbl_wilful">
-                    <thead>
-                      <tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th><th>Guar</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Wilful Defaulter</td>
-                        <td><select id="ef_WD_App"><option value="No">No</option><option value="Yes">Yes</option></select></td>
-                        <td class="ef-c1"><select id="ef_WD_CA1"><option value="No">No</option><option value="Yes">Yes</option></select></td>
-                        <td class="ef-c2"><select id="ef_WD_CA2"><option value="No">No</option><option value="Yes">Yes</option></select></td>
-                        <td class="ef-c3"><select id="ef_WD_CA3"><option value="No">No</option><option value="Yes">Yes</option></select></td>
-                        <td><select id="ef_WD_Guar"><option value="No">No</option><option value="Yes">Yes</option></select></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="ef-checkbox-grid" style="padding: 8px 10px;">
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Restructured_History"><label for="ef_Restructured_History">Restructured History</label></div>
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Settlement_History"><label for="ef_Settlement_History">Settlement History</label></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 5: Income (full width) -->
-          <div class="extra-section">
-            <div class="extra-section-header"><span>5 &mdash; Income (Monthly)</span></div>
-            <div class="extra-section-body" style="padding: 0;">
-              <div class="data-table-wrapper">
-                <table class="data-table" id="ef_tbl_income">
-                  <thead>
-                    <tr><th>Component</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Net Business / Salary</td>
-                      <td><input type="number" min="0" id="ef_I_Net_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Net_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Net_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Net_C3"></td></tr>
-                    <tr class="ef-group-header"><td colspan="5">Other Salary Components</td></tr>
-                    <tr><td>Monthly Incentive</td>
-                      <td><input type="number" min="0" id="ef_I_Inc_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Inc_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Inc_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Inc_C3"></td></tr>
-                    <tr><td>Annual Bonus (&divide;12)</td>
-                      <td><input type="number" min="0" id="ef_I_Bon_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Bon_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Bon_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Bon_C3"></td></tr>
-                    <tr><td>Pension Income</td>
-                      <td><input type="number" min="0" id="ef_I_Pen_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Pen_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Pen_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Pen_C3"></td></tr>
-                    <tr><td>Daily / Travel Allowances</td>
-                      <td><input type="number" min="0" id="ef_I_Alw_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Alw_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Alw_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Alw_C3"></td></tr>
-                    <tr class="ef-group-header"><td colspan="5">Other Income Sources</td></tr>
-                    <tr><td>Rental Income</td>
-                      <td><input type="number" min="0" id="ef_I_Ren_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Ren_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Ren_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Ren_C3"></td></tr>
-                    <tr><td>Dairy Income</td>
-                      <td><input type="number" min="0" id="ef_I_Dai_A" class="ef-dairy" data-p="A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Dai_C1" class="ef-dairy" data-p="C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Dai_C2" class="ef-dairy" data-p="C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Dai_C3" class="ef-dairy" data-p="C3"></td></tr>
-                    <tr><td>Dairy Cattle Count</td>
-                      <td class="ef-cond-cell" id="ef_cc_A"><input type="number" min="0" id="ef_I_Cat_A"></td>
-                      <td class="ef-c1 ef-cond-cell" id="ef_cc_C1"><input type="number" min="0" id="ef_I_Cat_C1"></td>
-                      <td class="ef-c2 ef-cond-cell" id="ef_cc_C2"><input type="number" min="0" id="ef_I_Cat_C2"></td>
-                      <td class="ef-c3 ef-cond-cell" id="ef_cc_C3"><input type="number" min="0" id="ef_I_Cat_C3"></td></tr>
-                    <tr><td>Tuition Income</td>
-                      <td><input type="number" min="0" id="ef_I_Tui_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_Tui_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_Tui_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_Tui_C3"></td></tr>
-                    <tr><td>Other Part Time Income</td>
-                      <td><input type="number" min="0" id="ef_I_PT_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_I_PT_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_I_PT_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_I_PT_C3"></td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 6: Obligations (full width) — per-person gold/education toggles -->
-          <div class="extra-section">
-            <div class="extra-section-header"><span>6 &mdash; Obligations (Monthly)</span></div>
-            <div class="extra-section-body" style="padding: 0;">
-              <div class="data-table-wrapper">
-                <table class="data-table" id="ef_tbl_obl">
-                  <thead>
-                    <tr><th>Obligation</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Existing EMIs (excl. gold, education)</td>
-                      <td><input type="number" min="0" id="ef_O_EMI_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_O_EMI_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_O_EMI_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_O_EMI_C3"></td></tr>
-                    <tr class="ef-group-header"><td colspan="5">Gold Loan</td></tr>
-                    <tr><td>Any Gold Loan Ongoing?</td>
-                      <td class="cell-center"><input type="checkbox" id="ef_gold_App" class="ef-gold-chk"></td>
-                      <td class="ef-c1 cell-center"><input type="checkbox" id="ef_gold_CA1" class="ef-gold-chk"></td>
-                      <td class="ef-c2 cell-center"><input type="checkbox" id="ef_gold_CA2" class="ef-gold-chk"></td>
-                      <td class="ef-c3 cell-center"><input type="checkbox" id="ef_gold_CA3" class="ef-gold-chk"></td></tr>
-                    <tr class="ef-cond-tr" id="ef_tr_GP"><td>Gold Loan POS</td>
-                      <td><input type="number" min="0" id="ef_O_GP_A" class="ef-gp" data-p="A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_O_GP_C1" class="ef-gp" data-p="C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_O_GP_C2" class="ef-gp" data-p="C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_O_GP_C3" class="ef-gp" data-p="C3"></td></tr>
-                    <tr class="ef-cond-tr" id="ef_tr_GE"><td>Gold Loan EMIs</td>
-                      <td class="ef-cond-cell" id="ef_ge_A"><input type="number" min="0" id="ef_O_GE_A"></td>
-                      <td class="ef-c1 ef-cond-cell" id="ef_ge_C1"><input type="number" min="0" id="ef_O_GE_C1"></td>
-                      <td class="ef-c2 ef-cond-cell" id="ef_ge_C2"><input type="number" min="0" id="ef_O_GE_C2"></td>
-                      <td class="ef-c3 ef-cond-cell" id="ef_ge_C3"><input type="number" min="0" id="ef_O_GE_C3"></td></tr>
-                    <tr class="ef-group-header"><td colspan="5">Education Loan</td></tr>
-                    <tr><td>Any Education Loan Ongoing?</td>
-                      <td class="cell-center"><input type="checkbox" id="ef_edu_App" class="ef-edu-chk"></td>
-                      <td class="ef-c1 cell-center"><input type="checkbox" id="ef_edu_CA1" class="ef-edu-chk"></td>
-                      <td class="ef-c2 cell-center"><input type="checkbox" id="ef_edu_CA2" class="ef-edu-chk"></td>
-                      <td class="ef-c3 cell-center"><input type="checkbox" id="ef_edu_CA3" class="ef-edu-chk"></td></tr>
-                    <tr class="ef-cond-tr" id="ef_tr_Edu"><td>Education Loan EMIs</td>
-                      <td><input type="number" min="0" id="ef_O_Edu_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_O_Edu_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_O_Edu_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_O_Edu_C3"></td></tr>
-                    <tr><td>Total CC Outstanding</td>
-                      <td><input type="number" min="0" id="ef_O_CC_A"></td>
-                      <td class="ef-c1"><input type="number" min="0" id="ef_O_CC_C1"></td>
-                      <td class="ef-c2"><input type="number" min="0" id="ef_O_CC_C2"></td>
-                      <td class="ef-c3"><input type="number" min="0" id="ef_O_CC_C3"></td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 3: Property & CERSAI + BT / TopUp -->
-          <div class="extra-fields-row">
-            <div class="extra-section">
-              <div class="extra-section-header"><span>7 &mdash; Property &amp; CERSAI</span></div>
-              <div class="extra-section-body">
-                <div class="form-grid" style="grid-template-columns: 1fr;">
-                  <div class="form-group">
-                    <label>Residual Life (Years)</label>
-                    <input type="number" min="0" id="ef_Residual_Life_Years">
-                  </div>
-                </div>
-                <div class="form-grid" style="grid-template-columns: 1fr; margin-top: 6px;">
-                  <div class="form-group">
-                    <label>CERSAI Search Done</label>
-                    <select id="ef_CERSAI_Search_Done">
-                      <option value="No">No</option><option value="Yes">Yes</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="ef-cond-row" id="ef_row_CERSAI_Clear">
-                  <div class="form-group" style="padding: 4px 12px;">
-                    <label>CERSAI Clear</label>
-                    <select id="ef_CERSAI_Clear">
-                      <option value="No">No</option><option value="Yes">Yes</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="extra-section">
-              <div class="extra-section-header"><span>8 &mdash; BT/BT+Topup?</span></div>
-              <div class="extra-section-body">
-                <div class="ef-checkbox-grid" style="margin-bottom: 4px;">
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_BT_TopUp"><label for="ef_Is_BT_TopUp">BT/BT+Topup?</label></div>
-                </div>
-                <div class="ef-bt-details" id="ef_bt_details">
-                  <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="form-group"><label>Total Tenure (months)</label><input type="number" min="0" id="ef_BT_Total_Tenure"></div>
-                    <div class="form-group"><label>EMIs Paid (months)</label><input type="number" min="0" id="ef_BT_EMIs_Paid"></div>
-                    <div class="form-group"><label>EMIs Remaining (months)</label><input type="number" min="0" id="ef_BT_EMIs_Remaining"></div>
-                    <div class="form-group"><label>Total Loan Amount</label><input type="number" min="0" id="ef_BT_Total_Loan_Amt"></div>
-                    <div class="form-group"><label>Balance Amount</label><input type="number" min="0" id="ef_BT_Balance_Amt"></div>
-                    <div class="form-group"><label>Bounced EMIs Count</label><input type="number" min="0" id="ef_BT_Bounced_EMIs"></div>
-                    <div class="form-group"><label>Max DPD</label><input type="number" min="0" id="ef_BT_Max_DPD"></div>
-                  </div>
-                  <div class="ef-checkbox-grid">
-                    <div class="ef-checkbox-item"><input type="checkbox" id="ef_Guarantor_Required"><label for="ef_Guarantor_Required">Guarantor Required</label></div>
-                  </div>
-                  <div class="ef-cond-row" id="ef_row_Guarantor_Name">
-                    <div class="form-group" style="padding: 4px 12px;">
-                      <label>Guarantor</label>
-                      <input type="text" id="ef_Guarantor_Name" placeholder="Name">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Row 4: Guarantor + Project & Exposure -->
-          <div class="extra-fields-row">
-            <div class="extra-section">
-              <div class="extra-section-header"><span>9 &mdash; Guarantor</span></div>
-              <div class="extra-section-body">
-                <div class="form-grid" style="grid-template-columns: 1fr;">
-                  <div class="form-group">
-                    <label>Is this case of Topup with guarantor?</label>
-                    <select id="ef_G_TopUp">
-                      <option value="No">No</option><option value="Yes">Yes</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="ef-cond-row" id="ef_row_G_Existing">
-                  <div class="form-group" style="padding: 4px 12px;">
-                    <label>The guarantor in existing/running loan is taken as guarantor for this too?</label>
-                    <select id="ef_G_Existing_Guarantor">
-                      <option value="No">No</option><option value="Yes">Yes</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="extra-section">
-              <div class="extra-section-header"><span>10 &mdash; Project &amp; Exposure</span></div>
-              <div class="extra-section-body">
-                <div class="ef-checkbox-grid">
-                  <div class="ef-checkbox-item"><input type="checkbox" id="ef_Non_RERA_Project"><label for="ef_Non_RERA_Project">Non-RERA Project</label></div>
-                </div>
-                <div class="ef-cond-row" id="ef_row_Company_Exposure">
-                  <div class="form-group" style="padding: 4px 12px;">
-                    <label>Company Exposure (%) in this project</label>
-                    <input type="number" min="0" max="100" step="0.01" id="ef_Company_Exposure_Percent">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="page-actions">
-            <button class="btn btn-success" onclick="saveExtraFields()">&#128190; Save</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== CAM: Check Eligibility (CAM BRE) Page ===== -->
+      <!-- ===== CAM: Check Eligibility (CAM BRE) Page — merged with Extra Fields ===== -->
       <div class="content-panel" id="page-cam-bre">
         <div class="bre-page">
           <div class="bre-header">
@@ -912,20 +529,406 @@
             <button class="btn-run-bre" id="btn-run-cam-bre">&#9654; Run CAM BRE</button>
           </div>
 
-          <!-- Empty State -->
-          <div class="bre-empty-state" id="cam-bre-empty">
-            <div class="empty-icon">&#128202;</div>
-            <div class="empty-title">No CAM BRE Results Yet</div>
-            <div class="empty-text">Run the CAM BRE to evaluate all applicable business rules for the CAM stage.</div>
-            <button class="btn btn-primary" id="btn-run-cam-bre-2">&#9654; Run CAM BRE</button>
+          <!-- Sub-tab bar -->
+          <div class="bre-subtabs">
+            <button class="bre-subtab active" id="bre-subtab-fields" onclick="switchBREView('fields')">Extra Fields</button>
+            <button class="bre-subtab disabled" id="bre-subtab-results" onclick="switchBREView('results')">BRE Results <span class="bre-subtab-hint" id="bre-subtab-hint">(Not run yet)</span></button>
           </div>
 
-          <!-- CAM BRE Results (dynamically rendered by JS) -->
-          <div class="bre-results" id="cam-bre-results">
-            <div id="cam-bre-dynamic-content">
-              <!-- Rendered by renderCamBREResults() -->
+          <!-- ===== Sub-view: Extra Fields ===== -->
+          <div class="bre-view active" id="cam-bre-fields-view">
+            <div class="extra-fields-page">
+
+              <!-- Row 1: Case Setup + Applicant & Co-Applicant Profile -->
+              <div class="extra-fields-row">
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>1 &mdash; Case Setup</span></div>
+                  <div class="extra-section-body">
+                    <div class="form-grid" style="grid-template-columns: 1fr;">
+                      <div class="form-group">
+                        <label>Co-applicant Count</label>
+                        <select id="ef_CoApplicant_Count">
+                          <option value="0">0</option><option value="1">1</option>
+                          <option value="2" selected>2</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="ef-checkbox-grid">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Has_Credit_Life_Insurance"><label for="ef_Has_Credit_Life_Insurance">Credit Life Insurance</label></div>
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_Third_Dwelling_Unit"><label for="ef_Is_Third_Dwelling_Unit">Third Dwelling Unit</label></div>
+                    </div>
+                    <div id="ef_income_considered_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
+                      <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Income Considered</label></div>
+                      <div class="ef-checkbox-item" id="ef_ic_group_1"><input type="checkbox" id="ef_Income_CA1" checked><label for="ef_Income_CA1">Co-applicant 1</label></div>
+                      <div class="ef-checkbox-item" id="ef_ic_group_2"><input type="checkbox" id="ef_Income_CA2"><label for="ef_Income_CA2">Co-applicant 2</label></div>
+                      <div class="ef-checkbox-item" id="ef_ic_group_3"><input type="checkbox" id="ef_Income_CA3"><label for="ef_Income_CA3">Co-applicant 3</label></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>2 &mdash; Applicant &amp; Co-applicant Profile</span></div>
+                  <div class="extra-section-body">
+                    <div class="ef-checkbox-grid">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Firm_Income_Considered"><label for="ef_Firm_Income_Considered">Firm Income Considered</label></div>
+                    </div>
+                    <div class="ef-cond-row" id="ef_row_All_Partners">
+                      <div class="ef-checkbox-item" style="padding: 4px 12px;">
+                        <input type="checkbox" id="ef_All_Partners_Are_Applicants">
+                        <label for="ef_All_Partners_Are_Applicants">All Partners Are Applicants</label>
+                      </div>
+                    </div>
+                    <div class="data-table-wrapper" style="margin-top: 8px;">
+                      <table class="data-table">
+                        <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
+                        <tbody>
+                          <tr><td>Having Govt. Pension</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Govt_Pension_App"></td>
+                            <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA1"></td>
+                            <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA2"></td>
+                            <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Govt_Pension_CA3"></td></tr>
+                          <tr><td>Defense Employee</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Defense_App"></td>
+                            <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Defense_CA1"></td>
+                            <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Defense_CA2"></td>
+                            <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Defense_CA3"></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Is Only Child per CA -->
+                    <div id="ef_only_child_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
+                      <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Is Only Child</label></div>
+                      <div class="ef-checkbox-item" id="ef_oc_group_1"><input type="checkbox" id="ef_CA_OC1"><label for="ef_CA_OC1">Co-applicant 1</label></div>
+                      <div class="ef-checkbox-item" id="ef_oc_group_2"><input type="checkbox" id="ef_CA_OC2"><label for="ef_CA_OC2">Co-applicant 2</label></div>
+                      <div class="ef-checkbox-item" id="ef_oc_group_3"><input type="checkbox" id="ef_CA_OC3"><label for="ef_CA_OC3">Co-applicant 3</label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 2: Verification + Bureau & Credit History -->
+              <div class="extra-fields-row">
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>3 &mdash; Verification</span></div>
+                  <div class="extra-section-body" style="padding: 0;">
+                    <div style="padding: 6px 10px; font-size: 10px; color: var(--text-light); background: #f9f9ff; border-bottom: 1px solid var(--border-light);">
+                      Bank Salaried: Residence by Salesperson &bull; Cash Salaried: Residence &amp; Office by Credit Manager &bull; SEP/SENP: Residence &amp; Office by Credit Manager
+                    </div>
+                    <!-- Residence Visit -->
+                    <div class="data-table-wrapper">
+                      <table class="data-table">
+                        <thead><tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr></thead>
+                        <tbody>
+                          <tr><td>Residence Visit Done</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Res_Visit_App"></td>
+                            <td class="ef-c1 cell-center"><input type="checkbox" id="ef_Res_Visit_CA1"></td>
+                            <td class="ef-c2 cell-center"><input type="checkbox" id="ef_Res_Visit_CA2"></td>
+                            <td class="ef-c3 cell-center"><input type="checkbox" id="ef_Res_Visit_CA3"></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Office & Employment -->
+                    <div style="padding: 4px 10px 2px; font-size: 10px; color: var(--text-light); font-style: italic; border-top: 1px solid var(--border-light);">Office &amp; Employment verification &mdash; income earners only</div>
+                    <div class="data-table-wrapper">
+                      <table class="data-table">
+                        <thead><tr><th></th><th>Applicant</th><th class="ef-ic1">Co-applicant 1</th><th class="ef-ic2">Co-applicant 2</th><th class="ef-ic3">Co-applicant 3</th></tr></thead>
+                        <tbody>
+                          <tr><td>Office Visit Done</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Office_Visit_App"></td>
+                            <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Office_Visit_CA1"></td>
+                            <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Office_Visit_CA2"></td>
+                            <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Office_Visit_CA3"></td></tr>
+                          <tr><td>Employment Verified</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Emp_Verified_App"></td>
+                            <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA1"></td>
+                            <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA2"></td>
+                            <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Verified_CA3"></td></tr>
+                          <tr><td>Employer Visit Photos</td>
+                            <td class="cell-center"><input type="checkbox" id="ef_Emp_Photos_App"></td>
+                            <td class="ef-ic1 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA1"></td>
+                            <td class="ef-ic2 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA2"></td>
+                            <td class="ef-ic3 cell-center"><input type="checkbox" id="ef_Emp_Photos_CA3"></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>4 &mdash; Bureau &amp; Credit History</span></div>
+                  <div class="extra-section-body" style="padding: 0;">
+                    <div class="data-table-wrapper">
+                      <table class="data-table" id="ef_tbl_wilful">
+                        <thead>
+                          <tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th><th>Guar</th></tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Wilful Defaulter</td>
+                            <td><select id="ef_WD_App"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                            <td class="ef-c1"><select id="ef_WD_CA1"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                            <td class="ef-c2"><select id="ef_WD_CA2"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                            <td class="ef-c3"><select id="ef_WD_CA3"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                            <td><select id="ef_WD_Guar"><option value="No">No</option><option value="Yes">Yes</option></select></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="ef-checkbox-grid" style="padding: 8px 10px;">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Restructured_History"><label for="ef_Restructured_History">Restructured History</label></div>
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Settlement_History"><label for="ef_Settlement_History">Settlement History</label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 5: Income (full width) -->
+              <div class="extra-section">
+                <div class="extra-section-header"><span>5 &mdash; Income (Monthly)</span></div>
+                <div class="extra-section-body" style="padding: 0;">
+                  <div class="data-table-wrapper">
+                    <table class="data-table" id="ef_tbl_income">
+                      <thead>
+                        <tr><th>Component</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Net Business / Salary</td>
+                          <td><input type="number" min="0" id="ef_I_Net_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Net_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Net_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Net_C3"></td></tr>
+                        <tr class="ef-group-header"><td colspan="5">Other Salary Components</td></tr>
+                        <tr><td>Monthly Incentive</td>
+                          <td><input type="number" min="0" id="ef_I_Inc_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Inc_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Inc_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Inc_C3"></td></tr>
+                        <tr><td>Annual Bonus (&divide;12)</td>
+                          <td><input type="number" min="0" id="ef_I_Bon_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Bon_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Bon_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Bon_C3"></td></tr>
+                        <tr><td>Pension Income</td>
+                          <td><input type="number" min="0" id="ef_I_Pen_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Pen_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Pen_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Pen_C3"></td></tr>
+                        <tr><td>Daily / Travel Allowances</td>
+                          <td><input type="number" min="0" id="ef_I_Alw_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Alw_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Alw_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Alw_C3"></td></tr>
+                        <tr class="ef-group-header"><td colspan="5">Other Income Sources</td></tr>
+                        <tr><td>Rental Income</td>
+                          <td><input type="number" min="0" id="ef_I_Ren_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Ren_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Ren_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Ren_C3"></td></tr>
+                        <tr><td>Dairy Income</td>
+                          <td><input type="number" min="0" id="ef_I_Dai_A" class="ef-dairy" data-p="A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Dai_C1" class="ef-dairy" data-p="C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Dai_C2" class="ef-dairy" data-p="C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Dai_C3" class="ef-dairy" data-p="C3"></td></tr>
+                        <tr><td>Dairy Cattle Count</td>
+                          <td class="ef-cond-cell" id="ef_cc_A"><input type="number" min="0" id="ef_I_Cat_A"></td>
+                          <td class="ef-c1 ef-cond-cell" id="ef_cc_C1"><input type="number" min="0" id="ef_I_Cat_C1"></td>
+                          <td class="ef-c2 ef-cond-cell" id="ef_cc_C2"><input type="number" min="0" id="ef_I_Cat_C2"></td>
+                          <td class="ef-c3 ef-cond-cell" id="ef_cc_C3"><input type="number" min="0" id="ef_I_Cat_C3"></td></tr>
+                        <tr><td>Tuition Income</td>
+                          <td><input type="number" min="0" id="ef_I_Tui_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_Tui_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_Tui_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_Tui_C3"></td></tr>
+                        <tr><td>Other Part Time Income</td>
+                          <td><input type="number" min="0" id="ef_I_PT_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_I_PT_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_I_PT_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_I_PT_C3"></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 6: Obligations (full width) -->
+              <div class="extra-section">
+                <div class="extra-section-header"><span>6 &mdash; Obligations (Monthly)</span></div>
+                <div class="extra-section-body" style="padding: 0;">
+                  <div class="data-table-wrapper">
+                    <table class="data-table" id="ef_tbl_obl">
+                      <thead>
+                        <tr><th>Obligation</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Existing EMIs (excl. gold, education)</td>
+                          <td><input type="number" min="0" id="ef_O_EMI_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_EMI_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_EMI_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_EMI_C3"></td></tr>
+                        <tr class="ef-group-header"><td colspan="5">Gold Loan</td></tr>
+                        <tr><td>Any Gold Loan Ongoing?</td>
+                          <td class="cell-center"><input type="checkbox" id="ef_gold_App" class="ef-gold-chk"></td>
+                          <td class="ef-c1 cell-center"><input type="checkbox" id="ef_gold_CA1" class="ef-gold-chk"></td>
+                          <td class="ef-c2 cell-center"><input type="checkbox" id="ef_gold_CA2" class="ef-gold-chk"></td>
+                          <td class="ef-c3 cell-center"><input type="checkbox" id="ef_gold_CA3" class="ef-gold-chk"></td></tr>
+                        <tr class="ef-cond-tr" id="ef_tr_GP"><td>Gold Loan POS</td>
+                          <td><input type="number" min="0" id="ef_O_GP_A" class="ef-gp" data-p="A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_GP_C1" class="ef-gp" data-p="C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_GP_C2" class="ef-gp" data-p="C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_GP_C3" class="ef-gp" data-p="C3"></td></tr>
+                        <tr class="ef-cond-tr" id="ef_tr_GE"><td>Gold Loan EMIs</td>
+                          <td class="ef-cond-cell" id="ef_ge_A"><input type="number" min="0" id="ef_O_GE_A"></td>
+                          <td class="ef-c1 ef-cond-cell" id="ef_ge_C1"><input type="number" min="0" id="ef_O_GE_C1"></td>
+                          <td class="ef-c2 ef-cond-cell" id="ef_ge_C2"><input type="number" min="0" id="ef_O_GE_C2"></td>
+                          <td class="ef-c3 ef-cond-cell" id="ef_ge_C3"><input type="number" min="0" id="ef_O_GE_C3"></td></tr>
+                        <tr class="ef-group-header"><td colspan="5">Education Loan</td></tr>
+                        <tr><td>Any Education Loan Ongoing?</td>
+                          <td class="cell-center"><input type="checkbox" id="ef_edu_App" class="ef-edu-chk"></td>
+                          <td class="ef-c1 cell-center"><input type="checkbox" id="ef_edu_CA1" class="ef-edu-chk"></td>
+                          <td class="ef-c2 cell-center"><input type="checkbox" id="ef_edu_CA2" class="ef-edu-chk"></td>
+                          <td class="ef-c3 cell-center"><input type="checkbox" id="ef_edu_CA3" class="ef-edu-chk"></td></tr>
+                        <tr class="ef-cond-tr" id="ef_tr_Edu"><td>Education Loan EMIs</td>
+                          <td><input type="number" min="0" id="ef_O_Edu_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_Edu_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_Edu_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_Edu_C3"></td></tr>
+                        <tr><td>Total CC Outstanding</td>
+                          <td><input type="number" min="0" id="ef_O_CC_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_CC_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_CC_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_CC_C3"></td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 3: Property & CERSAI + BT / TopUp -->
+              <div class="extra-fields-row">
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>7 &mdash; Property &amp; CERSAI</span></div>
+                  <div class="extra-section-body">
+                    <div class="form-grid" style="grid-template-columns: 1fr;">
+                      <div class="form-group">
+                        <label>Residual Life (Years)</label>
+                        <input type="number" min="0" id="ef_Residual_Life_Years">
+                      </div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: 1fr; margin-top: 6px;">
+                      <div class="form-group">
+                        <label>CERSAI Search Done</label>
+                        <select id="ef_CERSAI_Search_Done">
+                          <option value="No">No</option><option value="Yes">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="ef-cond-row" id="ef_row_CERSAI_Clear">
+                      <div class="form-group" style="padding: 4px 12px;">
+                        <label>CERSAI Clear</label>
+                        <select id="ef_CERSAI_Clear">
+                          <option value="No">No</option><option value="Yes">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>8 &mdash; BT/BT+Topup?</span></div>
+                  <div class="extra-section-body">
+                    <div class="ef-checkbox-grid" style="margin-bottom: 4px;">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_BT_TopUp"><label for="ef_Is_BT_TopUp">BT/BT+Topup?</label></div>
+                    </div>
+                    <div class="ef-bt-details" id="ef_bt_details">
+                      <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group"><label>Total Tenure (months)</label><input type="number" min="0" id="ef_BT_Total_Tenure"></div>
+                        <div class="form-group"><label>EMIs Paid (months)</label><input type="number" min="0" id="ef_BT_EMIs_Paid"></div>
+                        <div class="form-group"><label>EMIs Remaining (months)</label><input type="number" min="0" id="ef_BT_EMIs_Remaining"></div>
+                        <div class="form-group"><label>Total Loan Amount</label><input type="number" min="0" id="ef_BT_Total_Loan_Amt"></div>
+                        <div class="form-group"><label>Balance Amount</label><input type="number" min="0" id="ef_BT_Balance_Amt"></div>
+                        <div class="form-group"><label>Bounced EMIs Count</label><input type="number" min="0" id="ef_BT_Bounced_EMIs"></div>
+                        <div class="form-group"><label>Max DPD</label><input type="number" min="0" id="ef_BT_Max_DPD"></div>
+                      </div>
+                      <div class="ef-checkbox-grid">
+                        <div class="ef-checkbox-item"><input type="checkbox" id="ef_Guarantor_Required"><label for="ef_Guarantor_Required">Guarantor Required</label></div>
+                      </div>
+                      <div class="ef-cond-row" id="ef_row_Guarantor_Name">
+                        <div class="form-group" style="padding: 4px 12px;">
+                          <label>Guarantor</label>
+                          <input type="text" id="ef_Guarantor_Name" placeholder="Name">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 4: Guarantor + Project & Exposure -->
+              <div class="extra-fields-row">
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>9 &mdash; Guarantor</span></div>
+                  <div class="extra-section-body">
+                    <div class="form-grid" style="grid-template-columns: 1fr;">
+                      <div class="form-group">
+                        <label>Is this case of Topup with guarantor?</label>
+                        <select id="ef_G_TopUp">
+                          <option value="No">No</option><option value="Yes">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="ef-cond-row" id="ef_row_G_Existing">
+                      <div class="form-group" style="padding: 4px 12px;">
+                        <label>The guarantor in existing/running loan is taken as guarantor for this too?</label>
+                        <select id="ef_G_Existing_Guarantor">
+                          <option value="No">No</option><option value="Yes">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="extra-section">
+                  <div class="extra-section-header"><span>10 &mdash; Project &amp; Exposure</span></div>
+                  <div class="extra-section-body">
+                    <div class="ef-checkbox-grid">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Non_RERA_Project"><label for="ef_Non_RERA_Project">Non-RERA Project</label></div>
+                    </div>
+                    <div class="ef-cond-row" id="ef_row_Company_Exposure">
+                      <div class="form-group" style="padding: 4px 12px;">
+                        <label>Company Exposure (%) in this project</label>
+                        <input type="number" min="0" max="100" step="0.01" id="ef_Company_Exposure_Percent">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="page-actions">
+                <button class="btn btn-success" onclick="saveExtraFields()">&#128190; Save &amp; Run CAM BRE</button>
+              </div>
             </div>
           </div>
+
+          <!-- ===== Sub-view: BRE Results ===== -->
+          <div class="bre-view" id="cam-bre-results-view">
+            <button class="btn btn-secondary btn-sm" onclick="switchBREView('fields')" style="margin-bottom: 12px;">&#9998; Edit Extra Fields</button>
+
+            <!-- Empty State -->
+            <div class="bre-empty-state" id="cam-bre-empty">
+              <div class="empty-icon">&#128202;</div>
+              <div class="empty-title">No CAM BRE Results Yet</div>
+              <div class="empty-text">Run the CAM BRE to evaluate all applicable business rules for the CAM stage.</div>
+              <button class="btn btn-primary" id="btn-run-cam-bre-2">&#9654; Run CAM BRE</button>
+            </div>
+
+            <!-- CAM BRE Results (dynamically rendered by JS) -->
+            <div class="bre-results" id="cam-bre-results">
+              <div id="cam-bre-dynamic-content">
+                <!-- Rendered by renderCamBREResults() -->
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
