@@ -478,6 +478,10 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
 }
 .ef-cond-cell { visibility: hidden; }
 .ef-cond-cell.show { visibility: visible; }
+.ef-gold-cell { visibility: hidden; }
+.ef-gold-cell.gold-active { visibility: visible; }
+.ef-edu-cell { visibility: hidden; }
+.ef-edu-cell.edu-active { visibility: visible; }
 .ef-cond-tr { display: none; }
 .ef-cond-tr.show { display: table-row; }
 .ef-gates {
