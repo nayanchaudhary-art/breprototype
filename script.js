@@ -904,8 +904,10 @@ function initExtraFields() {
     tog($('#ef_tr_GE'), anyGold);
     Object.entries(goldPersonMap).forEach(([chkId, p]) => {
       const checked = $('#' + chkId).checked;
-      tog($('#ef_gp_cell_' + p), checked);
-      tog($('#ef_ge_' + p), checked);
+      const gpCell = $('#ef_gp_cell_' + p);
+      const geCell = $('#ef_ge_' + p);
+      if (gpCell) gpCell.classList.toggle('gold-active', checked);
+      if (geCell) geCell.classList.toggle('gold-active', checked);
     });
   }
   $$('.ef-gold-chk').forEach(chk => chk.addEventListener('change', syncGold));
@@ -917,7 +919,8 @@ function initExtraFields() {
     tog($('#ef_tr_Edu'), anyEdu);
     Object.entries(eduPersonMap).forEach(([chkId, p]) => {
       const checked = $('#' + chkId).checked;
-      tog($('#ef_edu_cell_' + p), checked);
+      const cell = $('#ef_edu_cell_' + p);
+      if (cell) cell.classList.toggle('edu-active', checked);
     });
   }
   $$('.ef-edu-chk').forEach(chk => chk.addEventListener('change', syncEdu));
