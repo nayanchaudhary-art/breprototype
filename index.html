@@ -230,7 +230,7 @@
       <!-- NEW ITEMS per CAM-BRE.md -->
       <div class="nav-item" data-page="cam-bre">
         <span class="nav-icon new-item">&#10003;</span>
-        <span class="nav-label">Check Eligibility (CAM BRE)</span>
+        <span class="nav-label">Run CAM BRE</span>
       </div>
       <div class="nav-item" data-page="cam-deviations">
         <span class="nav-icon new-item">D</span>
@@ -522,20 +522,13 @@
         <div class="bre-page">
           <div class="bre-header">
             <div>
-              <div class="bre-title">Check Eligibility (CAM BRE)</div>
+              <div class="bre-title">Run CAM BRE</div>
               <div class="bre-subtitle">CAM Stage &bull; Deal No: HDLHFLMMR0015649</div>
             </div>
             <button class="btn-run-bre" id="btn-run-cam-bre">&#9654; Run CAM BRE</button>
           </div>
 
-          <!-- Sub-tab bar -->
-          <div class="bre-subtabs">
-            <button class="bre-subtab active" id="bre-subtab-fields" onclick="switchBREView('fields')">Extra Fields</button>
-            <button class="bre-subtab disabled" id="bre-subtab-results" onclick="switchBREView('results')">BRE Results <span class="bre-subtab-hint" id="bre-subtab-hint">(Not run yet)</span></button>
-          </div>
-
-          <!-- ===== Sub-view: Extra Fields ===== -->
-          <div class="bre-view active" id="cam-bre-fields-view">
+          <div id="cam-bre-fields-view">
             <div class="extra-fields-page">
 
               <!-- Row 1: Case Setup + Applicant & Co-Applicant Profile -->
@@ -547,12 +540,14 @@
                       <div class="form-group">
                         <label>Co-applicant Count</label>
                         <select id="ef_CoApplicant_Count">
-                          <option value="0">0</option><option value="1" selected>1</option>
-                          <option value="2">2</option>
+                          <option value="0">0</option><option value="1">1</option>
+                          <option value="2" selected>2</option>
                         </select>
                       </div>
                     </div>
                     <div class="ef-checkbox-grid">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Has_Credit_Life_Insurance"><label for="ef_Has_Credit_Life_Insurance">Credit Life Insurance</label></div>
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Is_Third_Dwelling_Unit"><label for="ef_Is_Third_Dwelling_Unit">Third Dwelling Unit</label></div>
                     </div>
                     <div id="ef_income_considered_group" class="ef-checkbox-grid" style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px;">
                       <div style="grid-column: 1 / -1; margin-bottom: 2px;"><label style="font-weight: 600; color: var(--text-primary); font-size: 11px;">Income Considered</label></div>
@@ -566,6 +561,9 @@
                 <div class="extra-section">
                   <div class="extra-section-header"><span>2 &mdash; Applicant &amp; Co-applicant Profile</span></div>
                   <div class="extra-section-body">
+                    <div class="ef-checkbox-grid">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Firm_Income_Considered"><label for="ef_Firm_Income_Considered">Firm Income Considered</label></div>
+                    </div>
                     <div class="ef-cond-row" id="ef_row_All_Partners">
                       <div class="ef-checkbox-item" style="padding: 4px 12px;">
                         <input type="checkbox" id="ef_All_Partners_Are_Applicants">
@@ -654,7 +652,7 @@
                     <div class="data-table-wrapper">
                       <table class="data-table" id="ef_tbl_wilful">
                         <thead>
-                          <tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th><th>Guarantor</th></tr>
+                          <tr><th></th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th><th>Guar</th></tr>
                         </thead>
                         <tbody>
                           <tr>
@@ -667,6 +665,10 @@
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+                    <div class="ef-checkbox-grid" style="padding: 8px 10px;">
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Restructured_History"><label for="ef_Restructured_History">Restructured History</label></div>
+                      <div class="ef-checkbox-item"><input type="checkbox" id="ef_Settlement_History"><label for="ef_Settlement_History">Settlement History</label></div>
                     </div>
                   </div>
                 </div>
@@ -682,7 +684,7 @@
                         <tr><th>Component</th><th>Applicant</th><th class="ef-c1">Co-applicant 1</th><th class="ef-c2">Co-applicant 2</th><th class="ef-c3">Co-applicant 3</th></tr>
                       </thead>
                       <tbody>
-                        <tr><td>Core Business / Salary Income</td>
+                        <tr><td>Net Business / Salary</td>
                           <td><input type="number" min="0" id="ef_I_Net_A"></td>
                           <td class="ef-c1"><input type="number" min="0" id="ef_I_Net_C1"></td>
                           <td class="ef-c2"><input type="number" min="0" id="ef_I_Net_C2"></td>
@@ -761,16 +763,16 @@
                           <td class="ef-c1 cell-center"><input type="checkbox" id="ef_gold_CA1" class="ef-gold-chk"></td>
                           <td class="ef-c2 cell-center"><input type="checkbox" id="ef_gold_CA2" class="ef-gold-chk"></td>
                           <td class="ef-c3 cell-center"><input type="checkbox" id="ef_gold_CA3" class="ef-gold-chk"></td></tr>
-                        <tr class="ef-cond-tr" id="ef_tr_GP"><td>Gold Loan Outstanding</td>
-                          <td class="ef-gold-cell" id="ef_gp_cell_A"><input type="number" min="0" id="ef_O_GP_A"></td>
-                          <td class="ef-c1 ef-gold-cell" id="ef_gp_cell_C1"><input type="number" min="0" id="ef_O_GP_C1"></td>
-                          <td class="ef-c2 ef-gold-cell" id="ef_gp_cell_C2"><input type="number" min="0" id="ef_O_GP_C2"></td>
-                          <td class="ef-c3 ef-gold-cell" id="ef_gp_cell_C3"><input type="number" min="0" id="ef_O_GP_C3"></td></tr>
+                        <tr class="ef-cond-tr" id="ef_tr_GP"><td>Gold Loan POS</td>
+                          <td><input type="number" min="0" id="ef_O_GP_A" class="ef-gp" data-p="A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_GP_C1" class="ef-gp" data-p="C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_GP_C2" class="ef-gp" data-p="C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_GP_C3" class="ef-gp" data-p="C3"></td></tr>
                         <tr class="ef-cond-tr" id="ef_tr_GE"><td>Gold Loan EMIs</td>
-                          <td class="ef-gold-cell" id="ef_ge_A"><input type="number" min="0" id="ef_O_GE_A"></td>
-                          <td class="ef-c1 ef-gold-cell" id="ef_ge_C1"><input type="number" min="0" id="ef_O_GE_C1"></td>
-                          <td class="ef-c2 ef-gold-cell" id="ef_ge_C2"><input type="number" min="0" id="ef_O_GE_C2"></td>
-                          <td class="ef-c3 ef-gold-cell" id="ef_ge_C3"><input type="number" min="0" id="ef_O_GE_C3"></td></tr>
+                          <td class="ef-cond-cell" id="ef_ge_A"><input type="number" min="0" id="ef_O_GE_A"></td>
+                          <td class="ef-c1 ef-cond-cell" id="ef_ge_C1"><input type="number" min="0" id="ef_O_GE_C1"></td>
+                          <td class="ef-c2 ef-cond-cell" id="ef_ge_C2"><input type="number" min="0" id="ef_O_GE_C2"></td>
+                          <td class="ef-c3 ef-cond-cell" id="ef_ge_C3"><input type="number" min="0" id="ef_O_GE_C3"></td></tr>
                         <tr class="ef-group-header"><td colspan="5">Education Loan</td></tr>
                         <tr><td>Any Education Loan Ongoing?</td>
                           <td class="cell-center"><input type="checkbox" id="ef_edu_App" class="ef-edu-chk"></td>
@@ -778,10 +780,10 @@
                           <td class="ef-c2 cell-center"><input type="checkbox" id="ef_edu_CA2" class="ef-edu-chk"></td>
                           <td class="ef-c3 cell-center"><input type="checkbox" id="ef_edu_CA3" class="ef-edu-chk"></td></tr>
                         <tr class="ef-cond-tr" id="ef_tr_Edu"><td>Education Loan EMIs</td>
-                          <td class="ef-edu-cell" id="ef_edu_cell_A"><input type="number" min="0" id="ef_O_Edu_A"></td>
-                          <td class="ef-c1 ef-edu-cell" id="ef_edu_cell_C1"><input type="number" min="0" id="ef_O_Edu_C1"></td>
-                          <td class="ef-c2 ef-edu-cell" id="ef_edu_cell_C2"><input type="number" min="0" id="ef_O_Edu_C2"></td>
-                          <td class="ef-c3 ef-edu-cell" id="ef_edu_cell_C3"><input type="number" min="0" id="ef_O_Edu_C3"></td></tr>
+                          <td><input type="number" min="0" id="ef_O_Edu_A"></td>
+                          <td class="ef-c1"><input type="number" min="0" id="ef_O_Edu_C1"></td>
+                          <td class="ef-c2"><input type="number" min="0" id="ef_O_Edu_C2"></td>
+                          <td class="ef-c3"><input type="number" min="0" id="ef_O_Edu_C3"></td></tr>
                         <tr><td>Total CC Outstanding</td>
                           <td><input type="number" min="0" id="ef_O_CC_A"></td>
                           <td class="ef-c1"><input type="number" min="0" id="ef_O_CC_C1"></td>
@@ -894,27 +896,7 @@
               </div>
 
               <div class="page-actions">
-                <button class="btn btn-success" onclick="saveExtraFields()">&#128190; Save &amp; Run CAM BRE</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== Sub-view: BRE Results ===== -->
-          <div class="bre-view" id="cam-bre-results-view">
-            <button class="btn btn-secondary btn-sm" onclick="switchBREView('fields')" style="margin-bottom: 12px;">&#9998; Edit Extra Fields</button>
-
-            <!-- Empty State -->
-            <div class="bre-empty-state" id="cam-bre-empty">
-              <div class="empty-icon">&#128202;</div>
-              <div class="empty-title">No CAM BRE Results Yet</div>
-              <div class="empty-text">Run the CAM BRE to evaluate all applicable business rules for the CAM stage.</div>
-              <button class="btn btn-primary" id="btn-run-cam-bre-2">&#9654; Run CAM BRE</button>
-            </div>
-
-            <!-- CAM BRE Results (dynamically rendered by JS) -->
-            <div class="bre-results" id="cam-bre-results">
-              <div id="cam-bre-dynamic-content">
-                <!-- Rendered by renderCamBREResults() -->
+                <button class="btn btn-success" onclick="saveExtraFields()">&#128190; Save</button>
               </div>
             </div>
           </div>
@@ -925,10 +907,11 @@
       <!-- ===== CAM: Deviations Page ===== -->
       <div class="content-panel" id="page-cam-deviations">
         <div class="deviations-page">
-          <div class="deviations-title">Deviations</div>
+          <div class="deviations-title" style="display: flex; align-items: center; gap: 12px;">Deviations <span id="bre-summary-section"></span></div>
+          <div id="bre-failed-rules-section"></div>
 
           <!-- BRE-Identified Deviations (Frozen) -->
-          <div class="deviation-section">
+          <div class="deviation-section" id="bre-identified-deviations-section">
             <div class="deviation-section-title">
               BRE-Identified Deviations
               <span class="frozen-badge">Frozen</span>
@@ -946,51 +929,14 @@
                     <th>Remarks</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr class="frozen-row">
-                    <td class="cell-center"><input type="checkbox" checked disabled></td>
-                    <td>B001</td>
-                    <td>Bureau score greater than 0 and less than 650 (Co-Applicant)</td>
-                    <td class="cell-center">3</td>
-                    <td><input type="text" value="Score: 620"></td>
-                    <td><input type="text" value=""></td>
-                    <td><input type="text" value=""></td>
-                  </tr>
-                  <tr class="frozen-row">
-                    <td class="cell-center"><input type="checkbox" checked disabled></td>
-                    <td>B002</td>
-                    <td>Overdue/DPD in Bureau for any loan/credit card up to Rs. 10,000 (Co-Applicant)</td>
-                    <td class="cell-center">2</td>
-                    <td><input type="text" value="Rs. 8,000"></td>
-                    <td><input type="text" value=""></td>
-                    <td><input type="text" value=""></td>
-                  </tr>
-                  <tr class="frozen-row">
-                    <td class="cell-center"><input type="checkbox" checked disabled></td>
-                    <td>L001</td>
-                    <td>LTV exceeds policy norm by up to 5% (within regulatory limit)</td>
-                    <td class="cell-center">3</td>
-                    <td><input type="text" value="LTV: 83%"></td>
-                    <td><input type="text" value=""></td>
-                    <td><input type="text" value=""></td>
-                  </tr>
-                  <tr class="frozen-row">
-                    <td class="cell-center"><input type="checkbox" checked disabled></td>
-                    <td>F001</td>
-                    <td>FOIR exceeds maximum limit by up to 5% based on income slab</td>
-                    <td class="cell-center">3</td>
-                    <td><input type="text" value="FOIR: 53%"></td>
-                    <td><input type="text" value=""></td>
-                    <td><input type="text" value=""></td>
-                  </tr>
-                </tbody>
+                <tbody id="bre-identified-deviations-tbody"></tbody>
               </table>
             </div>
           </div>
 
           <!-- Manual Deviations -->
           <div class="deviation-section">
-            <div class="deviation-section-title">Manual Deviations</div>
+            <div class="deviation-section-title">Manual Deviations <button class="btn btn-primary btn-sm" style="margin-left:auto;" onclick="addManualDeviationRow()">Add+</button></div>
             <div class="data-table-wrapper">
               <table class="data-table">
                 <thead>
@@ -1004,7 +950,7 @@
                     <th>Remarks</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="manual-deviations-tbody">
                   <tr>
                     <td class="cell-center"><input type="checkbox"></td>
                     <td>6376</td>
