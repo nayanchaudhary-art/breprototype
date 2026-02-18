@@ -7,13 +7,16 @@
 // STATE
 // =============================================
 const state = {
-  currentTab: 'predeal',
+  currentTab: 'cam',
   currentPredealPage: 'predeal-source',
   currentCamPage: 'cam-personal',
   preDealBRERun: false,
   preDealBREStatus: null,       // null | 'passed' | 'failed'
   camBRERun: false,
   camBREStatus: null,           // null | 'passed' | 'failed' | 'deviated'
+  lastBRERunTime: null,
+  camSheetLastUpdated: null,
+  extraFieldsSaved: false,
   // Simulator selections (default variation to show)
   simPreDeal: 'failed',        // 'passed' | 'failed'
   simCam: 'deviated',          // 'passed' | 'deviated' | 'failed'
@@ -158,6 +161,25 @@ function switchTab(tabName) {
 // SIDEBAR NAVIGATION
 // =============================================
 function navigateToPage(pageId) {
+  // Guard: Block navigation to Deviations if BRE hasn't been run
+  if (pageId === 'cam-deviations' && !state.camBRERun) {
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">BRE Required</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">&#9888;&#65039;</div>
+        <div class="modal-text">You must run the CAM BRE before adding deviations to this application.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal(); runCamBREFromPage();">Run CAM BRE</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
   const tab = state.currentTab;
   const sidebar = document.getElementById('sidebar-' + tab);
   sidebar.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === pageId));
@@ -165,6 +187,11 @@ function navigateToPage(pageId) {
   document.getElementById('page-' + pageId).classList.add('active');
   if (tab === 'predeal') state.currentPredealPage = pageId;
   else if (tab === 'cam') state.currentCamPage = pageId;
+
+  // Render BRE data when navigating to deviations page
+  if (pageId === 'cam-deviations') {
+    renderBREDataOnDeviationsPage();
+  }
 }
 
 
@@ -299,67 +326,23 @@ function renderPreDealBREResults() {
   `;
 }
 
-// --- CAM BRE Results ---
+// --- CAM BRE Results (status computation only — results sub-view removed in v2) ---
 function renderCamBREResults() {
   const variation = state.simCam;
   const rules = getCamRules(variation);
 
-  const passed = rules.filter(r => r.status === 'passed');
   const failed = rules.filter(r => r.status === 'failed');
   const deviated = rules.filter(r => r.status === 'deviated');
-  const total = rules.length;
 
   let overallStatus;
   if (failed.length > 0) overallStatus = 'failed';
   else if (deviated.length > 0) overallStatus = 'deviated';
   else overallStatus = 'passed';
 
-  const statusIcons = { passed: '&#10004;', deviated: '&#9888;', failed: '&#10006;' };
-  const statusLabels = { passed: 'Passed', deviated: 'Deviated', failed: 'Failed' };
-  const eligible = failed.length > 0 ? '&mdash;' : '&#8377;25,00,000';
-
   state.camBREStatus = overallStatus;
 
-  const container = document.getElementById('cam-bre-dynamic-content');
-  container.innerHTML = `
-    <!-- Overall Status -->
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-      <span style="font-size:14px; font-weight:600;">Overall CAM BRE Status:</span>
-      <span class="bre-status-badge ${overallStatus}" style="font-size:14px; padding:5px 16px;">
-        <span>${statusIcons[overallStatus]}</span> ${statusLabels[overallStatus]}
-      </span>
-      <span style="font-size:11px; color:#999; margin-left:8px;">Last run: ${getCurrentTimestamp()}</span>
-    </div>
-
-    <!-- Summary Cards (CAM: 5 cards, with Deviated and Eligible Amount) -->
-    <div class="summary-cards" style="grid-template-columns: repeat(5, 1fr);">
-      <div class="summary-card total">
-        <div class="card-value">${total}</div>
-        <div class="card-label">Total Applicable Rules</div>
-      </div>
-      <div class="summary-card passed">
-        <div class="card-value">${passed.length}</div>
-        <div class="card-label">Total Passed</div>
-      </div>
-      <div class="summary-card failed">
-        <div class="card-value">${failed.length}</div>
-        <div class="card-label">Total Failed</div>
-      </div>
-      <div class="summary-card deviated">
-        <div class="card-value">${deviated.length}</div>
-        <div class="card-label">Total Deviated</div>
-      </div>
-      <div class="summary-card amount">
-        <div class="card-value">${eligible}</div>
-        <div class="card-label">Eligible Loan Amount</div>
-      </div>
-    </div>
-
-    <!-- Rule Tables -->
-    ${renderFailedTable(failed)}
-    ${renderDeviatedTable(deviated)}
-    ${renderPassedTable(passed)}
-  `;
+  // Update BRE data on deviations page if visible
+  renderBREDataOnDeviationsPage();
 }
 
 
@@ -514,42 +497,134 @@ function showPreDealBREPage() {
 // CAM BRE FLOW
 // =============================================
 
-// --- Sub-tab view switching ---
-function switchBREView(view) {
-  const fieldsTab = document.getElementById('bre-subtab-fields');
-  const resultsTab = document.getElementById('bre-subtab-results');
-  const fieldsView = document.getElementById('cam-bre-fields-view');
-  const resultsView = document.getElementById('cam-bre-results-view');
+// =============================================
+// EXTRA FIELDS VALIDATION
+// =============================================
 
-  if (view === 'results' && !state.camBRERun) return; // block if not run yet
+function validateExtraFields() {
+  const missing = [];
+  const $ = s => document.querySelector(s);
+  const n = +$('#ef_CoApplicant_Count').value;
 
-  fieldsTab.classList.toggle('active', view === 'fields');
-  resultsTab.classList.toggle('active', view === 'results');
-  fieldsView.classList.toggle('active', view === 'fields');
-  resultsView.classList.toggle('active', view === 'results');
+  // Check key income fields
+  const netIncome = $('#ef_I_Net_A');
+  if (netIncome && (!netIncome.value || +netIncome.value === 0)) missing.push('Net Business / Salary (Applicant)');
+
+  // Check Residual Life
+  const residual = $('#ef_Residual_Life_Years');
+  if (residual && (!residual.value || +residual.value === 0)) missing.push('Residual Life (Years)');
+
+  // Check Wilful Defaulter fields
+  const wdApp = $('#ef_WD_App');
+  if (wdApp && !wdApp.value) missing.push('Wilful Defaulter (Applicant)');
+
+  // Check CERSAI
+  const cersai = $('#ef_CERSAI_Search_Done');
+  if (cersai && cersai.value === 'Yes') {
+    const cersaiClear = $('#ef_CERSAI_Clear');
+    if (cersaiClear && !cersaiClear.value) missing.push('CERSAI Clear');
+  }
+
+  return missing;
 }
 
-// Single save for all Extra Fields sections — triggers BRE run
+// LOS compulsory input fields validation (simulated)
+function validateLOSFields() {
+  const missing = [];
+  // Simulate checking LOS fields — in production, these would come from the actual LOS data
+  // For prototype: randomly pass or check a few fields from the CAM sheet
+  return missing;
+}
+
+// Save Extra Fields only — does NOT run BRE
 function saveExtraFields() {
+  const missingFields = validateExtraFields();
+  if (missingFields.length > 0) {
+    const fieldList = missingFields.map(f => '<li>' + f + '</li>').join('');
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">Extra Fields Missing</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon" style="color: var(--warning-orange);">&#9888;</div>
+        <div class="modal-text" style="text-align:left;">Some extra fields are missing. Please fill them and then proceed.<ul style="margin-top:8px; padding-left:20px;">${fieldList}</ul></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
+  // Save fields
   showModal(`
     <div class="modal-body">
       <div class="loading-spinner">
         <div class="spinner"></div>
-        <div class="loading-text">Saving extra fields &amp; generating CAM BRE results...</div>
+        <div class="loading-text">Saving extra fields...</div>
       </div>
     </div>
   `);
 
   setTimeout(() => {
-    state.camBRERun = true;
-    renderCamBREResults();
-    closeModal();
-    showCamBREPage();
-    showCamBREStatusModal('page');
-  }, 2000);
+    state.extraFieldsSaved = true;
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">Saved</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon" style="color: var(--success-green);">&#10004;</div>
+        <div class="modal-text" style="color: var(--success-green); font-weight:600;">Extra fields saved successfully. You can now run CAM BRE.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal(); runCamBREFromPage();">Run CAM BRE</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+  }, 1200);
 }
 
+// Run CAM BRE from page button — checks extra fields saved first
 function runCamBREFromPage() {
+  if (!state.extraFieldsSaved) {
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">Extra Fields Required</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon" style="color: var(--warning-orange);">&#9888;</div>
+        <div class="modal-text">Some extra fields are missing. Please fill them and then proceed.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
+  // Check LOS compulsory fields
+  const losMissing = validateLOSFields();
+  if (losMissing.length > 0) {
+    const fieldList = losMissing.map(f => '<li>' + f + '</li>').join('');
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">Input Fields Missing</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon" style="color: var(--warning-orange);">&#9888;</div>
+        <div class="modal-text" style="text-align:left;">Some Input fields are missing:<ul style="margin-top:8px; padding-left:20px;">${fieldList}</ul></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
   showModal(`
     <div class="modal-body">
       <div class="loading-spinner">
@@ -561,77 +636,40 @@ function runCamBREFromPage() {
 
   setTimeout(() => {
     state.camBRERun = true;
+    state.lastBRERunTime = Date.now();
+    state.camSheetLastUpdated = null;
     renderCamBREResults();
     closeModal();
-    showCamBREPage();
     showCamBREStatusModal('page');
   }, 2000);
-}
-
-function runCamBREFromModal() {
-  showModal(`
-    <div class="modal-body">
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <div class="loading-text">Generating BRE results for CAM stage...</div>
-      </div>
-    </div>
-  `);
-
-  setTimeout(() => {
-    state.camBRERun = true;
-    renderCamBREResults();
-    showCamBREPage();
-    showCamBREStatusModal('modal');
-  }, 2000);
-}
-
-function showCamBREPage() {
-  document.getElementById('cam-bre-empty').style.display = 'none';
-  document.getElementById('cam-bre-results').classList.add('active');
-  // Enable results sub-tab and switch to results view
-  const resultsTab = document.getElementById('bre-subtab-results');
-  resultsTab.classList.remove('disabled');
-  document.getElementById('bre-subtab-hint').textContent = '';
-  switchBREView('results');
 }
 
 function showCamBREStatusModal(source) {
   const status = state.camBREStatus;
+  const rules = getCamRules(state.simCam);
+  const failedCount = rules.filter(r => r.status === 'failed').length;
+  const deviatedCount = rules.filter(r => r.status === 'deviated').length;
+
   let statusClass, statusIcon, statusText, bodyText, primaryCTA, primaryAction, secCTA, secAction;
 
   if (status === 'passed') {
     statusClass = 'passed'; statusIcon = '&#10004;'; statusText = 'Passed';
-    bodyText = 'All CAM BRE rules have passed successfully. You may record manual deviations if additional business exceptions need to be captured.';
+    bodyText = 'All CAM BRE rules have passed successfully.<br>You may record manual deviations if additional business exceptions need to be captured.';
+    primaryCTA = 'Add manual deviations';
+    primaryAction = "closeModal(); navigateToPage('cam-deviations');";
+    secCTA = 'Close';
+    secAction = 'closeModal()';
   } else if (status === 'deviated') {
     statusClass = 'deviated'; statusIcon = '&#9888;'; statusText = 'Deviated';
-    const devCount = getCamRules(state.simCam).filter(r => r.status === 'deviated').length;
-    bodyText = devCount + ' rule(s) deviated. Please add mitigants for the identified deviations. You may also record additional manual deviations if required.';
+    bodyText = deviatedCount + ' rule(s) deviated. Please add mitigants and remarks for the identified deviations. You may also record additional manual deviations if required.';
+    primaryCTA = 'View/add deviations';
+    primaryAction = "closeModal(); navigateToPage('cam-deviations');";
+    secCTA = 'Close';
+    secAction = 'closeModal()';
   } else {
     statusClass = 'failed'; statusIcon = '&#10006;'; statusText = 'Failed';
-    const failCount = getCamRules(state.simCam).filter(r => r.status === 'failed').length;
-    bodyText = failCount + ' rules failed. You may record additional manual deviations if required.';
-  }
-
-  if (source === 'approval') {
-    // Send for Approval context: primary = Send for Approval, secondary = deviations action
-    primaryCTA = 'Send for Approval';
-    primaryAction = 'handleSendForApprovalConfirm()';
-    if (status === 'passed') {
-      secCTA = 'Add manual Deviations';
-    } else {
-      secCTA = 'View/add Deviations';
-    }
-    secAction = "closeModal(); navigateToPage('cam-deviations');";
-  } else {
-    // Page/modal context: primary = deviations action, secondary = Close
-    if (status === 'passed') {
-      primaryCTA = 'Add manual deviations';
-    } else if (status === 'deviated') {
-      primaryCTA = 'View/add deviations';
-    } else {
-      primaryCTA = 'Add/Review deviations';
-    }
+    bodyText = failedCount + ' rule(s) Failed. This application is not eligible for submission. To proceed, please update the required fields and re-run the BRE, or reject the case.';
+    primaryCTA = 'View Failed rules';
     primaryAction = "closeModal(); navigateToPage('cam-deviations');";
     secCTA = 'Close';
     secAction = 'closeModal()';
@@ -649,53 +687,102 @@ function showCamBREStatusModal(source) {
         </span>
       </div>
       <div class="modal-text">${bodyText}</div>
-      <div class="modal-link">
-        <a href="#" class="btn-link" onclick="event.preventDefault(); closeModal(); navigateToPage('cam-bre');">View Full Results</a>
-      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="${primaryAction}">${primaryCTA}</button>
-      <button class="btn btn-${source === 'approval' ? 'secondary' : 'ghost'}" onclick="${secAction}">${secCTA}</button>
+      <button class="btn btn-ghost" onclick="${secAction}">${secCTA}</button>
     </div>
   `);
 }
 
-// "Send for Approval" ALWAYS triggers fresh CAM BRE run — never assumes prior result
+// Send for Approval — 4-case flow with staleness detection
 function handleSendForApproval() {
-  showModal(`
-    <div class="modal-header">
-      <span class="modal-title">CAM BRE Required</span>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-icon">&#9888;&#65039;</div>
-      <div class="modal-text">Running CAM BRE is required before sending this for approval.</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="runCamBREFromApproval()">&#9654; Run CAM BRE</button>
-      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
-    </div>
-  `);
-}
-
-function runCamBREFromApproval() {
-  showModal(`
-    <div class="modal-body">
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <div class="loading-text">Generating CAM BRE results...</div>
+  // Case 0: BRE never ran — offer to run inline
+  if (!state.camBRERun) {
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">CAM BRE Required</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
-    </div>
-  `);
-  setTimeout(() => {
-    state.camBRERun = true;
-    renderCamBREResults();
-    showCamBREPage();
-    showCamBREStatusModal('approval');
-  }, 2000);
-}
+      <div class="modal-body">
+        <div class="modal-icon">&#9888;&#65039;</div>
+        <div class="modal-text">You must run the CAM BRE before sending CAM Sheet for approval.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal(); runCamBREFromPage();">Run CAM BRE</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
 
-function handleSendForApprovalConfirm() {
+  // Case 3: Fields updated after last BRE run
+  if (state.camSheetLastUpdated !== null && state.camSheetLastUpdated >= state.lastBRERunTime) {
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">BRE Re-run Required</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-icon">&#9888;&#65039;</div>
+        <div class="modal-text">Some fields were updated recently after the BRE was run. Please re-run the BRE.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal(); runCamBREFromPage();">Re-run CAM BRE</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
+  // Case: BRE failed — block submission
+  if (state.camBREStatus === 'failed') {
+    const rules = getCamRules(state.simCam);
+    const failedCount = rules.filter(r => r.status === 'failed').length;
+    showModal(`
+      <div class="modal-header">
+        <span class="modal-title">CAM BRE Status</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-status">
+          <span class="bre-status-badge failed" style="font-size:16px; padding:6px 20px;">
+            <span>&#10006;</span> Failed
+          </span>
+        </div>
+        <div class="modal-text">${failedCount} rule(s) Failed. This application is not eligible for submission. You can update the required fields and re-run the BRE, or reject the case.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal(); navigateToPage('cam-deviations');">View Failed Rules</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    `);
+    return;
+  }
+
+  // Case 1: Ticked deviations missing mitigants/remarks
+  {
+    const devErrors = getDeviationValidationErrors();
+    if (devErrors.length > 0) {
+      showModal(`
+        <div class="modal-header">
+          <span class="modal-title">Deviations Incomplete</span>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-icon">&#9888;&#65039;</div>
+          <div class="modal-text">Please add mitigants and remarks for deviations to proceed.</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" onclick="closeModal(); navigateToPage('cam-deviations');">Go to Deviations</button>
+          <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+        </div>
+      `);
+      return;
+    }
+  }
+
+  // Case 2: All clear — confirm
   showModal(`
     <div class="modal-header">
       <span class="modal-title">Confirm</span>
@@ -703,7 +790,7 @@ function handleSendForApprovalConfirm() {
     </div>
     <div class="modal-body">
       <div class="modal-icon">&#10068;</div>
-      <div class="modal-text">Do you want to send for Approval?</div>
+      <div class="modal-text">Do you want to send this CAM Sheet for approval?</div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="executeSendForApproval()">Yes</button>
@@ -713,33 +800,15 @@ function handleSendForApprovalConfirm() {
 }
 
 function executeSendForApproval() {
-  const validationPass = Math.random() > 0.3;
-  if (!validationPass) {
-    showModal(`
-      <div class="modal-header">
-        <span class="modal-title">Validation Error</span>
-        <button class="modal-close" onclick="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-icon" style="color: var(--danger-red);">&#9888;</div>
-        <div class="modal-text" style="color: var(--danger-red); font-weight:600;">XYZ input is missing</div>
-        <div class="modal-text">Please fill in the required field before sending for Approval.</div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
-      </div>
-    `);
-  } else {
-    showModal(`
-      <div class="modal-body" style="padding:40px;">
-        <div class="modal-icon" style="color: var(--success-green);">&#10004;</div>
-        <div class="modal-text" style="color: var(--success-green); font-weight:700; font-size:16px;">Successfully Sent for Approval</div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" onclick="closeModal()">OK</button>
-      </div>
-    `);
-  }
+  showModal(`
+    <div class="modal-body" style="padding:40px;">
+      <div class="modal-icon" style="color: var(--success-green);">&#10004;</div>
+      <div class="modal-text" style="color: var(--success-green); font-weight:700; font-size:16px;">CAM Sheet Successfully Sent for approval!</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal()">Close</button>
+    </div>
+  `);
 }
 
 function saveDeviations() {
@@ -752,6 +821,190 @@ function saveDeviations() {
       <button class="btn btn-primary" onclick="closeModal()">OK</button>
     </div>
   `);
+}
+
+
+// =============================================
+// BRE DATA ON DEVIATIONS PAGE
+// =============================================
+
+function renderBREDataOnDeviationsPage() {
+  renderBRESummaryOnDeviationsPage();
+  renderFailedRulesOnDeviationsPage();
+  renderBREIdentifiedDeviations();
+}
+
+function renderBRESummaryOnDeviationsPage() {
+  const container = document.getElementById('bre-summary-section');
+  if (!container) return;
+
+  if (!state.camBRERun) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const status = state.camBREStatus;
+  const statusClass = status === 'passed' ? 'passed' : status === 'deviated' ? 'deviated' : 'failed';
+  const statusIcon = status === 'passed' ? '&#10004;' : status === 'deviated' ? '&#9888;' : '&#10006;';
+  const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+
+  container.innerHTML = `<span class="bre-status-badge ${statusClass}" style="font-size: 12px; padding: 3px 12px;">${statusIcon} ${statusText}</span>`;
+}
+
+function renderFailedRulesOnDeviationsPage() {
+  const container = document.getElementById('bre-failed-rules-section');
+  if (!container) return;
+
+  if (!state.camBRERun) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const rules = getCamRules(state.simCam);
+  const failed = rules.filter(r => r.status === 'failed');
+
+  if (failed.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="deviation-section">
+      <div class="deviation-section-title" style="color: #c62828;">Failed Rules <span class="count-badge fail" style="color:#fff; font-size:10px; padding:1px 8px; border-radius:10px;">${failed.length}</span></div>
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead><tr><th>Block Name</th><th>Rule Name</th><th>Actual Value</th><th>Threshold</th></tr></thead>
+          <tbody>
+            ${failed.map(r => `<tr>
+              <td>${r.block}</td><td>${r.name}</td>
+              <td class="text-danger fw-bold">${r.actual}</td><td>${r.threshold}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function renderBREIdentifiedDeviations() {
+  const section = document.getElementById('bre-identified-deviations-section');
+  const tbody = document.getElementById('bre-identified-deviations-tbody');
+  if (!tbody) return;
+
+  if (!state.camBRERun) {
+    if (section) section.style.display = 'none';
+    return;
+  }
+
+  const deviated = getCamRules(state.simCam).filter(r => r.status === 'deviated');
+
+  if (deviated.length === 0) {
+    if (section) section.style.display = 'none';
+    return;
+  }
+
+  if (section) section.style.display = '';
+
+  // Block abbreviation map for ID generation
+  const blockAbbrev = {
+    'Bureau & Credit': 'B',
+    'LTV': 'L',
+    'FOIR': 'F',
+    'Income & Employment': 'I',
+    'Age Eligibility': 'A',
+    'Loan Parameters': 'P',
+    'Tenure': 'T',
+    'Property': 'R',
+    'Co-Applicant & Guarantor': 'G',
+    'Residence Stability': 'S'
+  };
+
+  // Count per prefix for sequential IDs
+  const counters = {};
+  tbody.innerHTML = deviated.map(r => {
+    const prefix = blockAbbrev[r.block] || r.block.charAt(0).toUpperCase();
+    counters[prefix] = (counters[prefix] || 0) + 1;
+    const id = prefix + String(counters[prefix]).padStart(3, '0');
+    return `<tr class="frozen-row">
+      <td class="cell-center"><input type="checkbox" checked disabled></td>
+      <td>${id}</td>
+      <td>${r.devRule || r.name}</td>
+      <td class="cell-center">${r.devLevel || '-'}</td>
+      <td><input type="text" value="${r.actual}" readonly style="background:#f5f5f5; border-color:#e0e0e0;"></td>
+      <td><input type="text" value="" placeholder=""></td>
+      <td><input type="text" value="" placeholder=""></td>
+    </tr>`;
+  }).join('');
+}
+
+
+// =============================================
+// MANUAL DEVIATION ROW
+// =============================================
+
+function addManualDeviationRow() {
+  const tbody = document.getElementById('manual-deviations-tbody');
+  if (!tbody) return;
+
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td class="cell-center"><input type="checkbox"></td>
+    <td><input type="text" placeholder="ID"></td>
+    <td><input type="text" placeholder="Rule Description"></td>
+    <td><input type="text" placeholder="L" style="width:40px; text-align:center;"></td>
+    <td><input type="text" placeholder="Actual Value"></td>
+    <td><input type="text" placeholder="Justification/Mitigants"></td>
+    <td><input type="text" placeholder="Remarks"></td>
+  `;
+  tbody.appendChild(row);
+}
+
+
+// =============================================
+// DEVIATION VALIDATION
+// =============================================
+
+function getDeviationValidationErrors() {
+  const errors = [];
+  const deviationsPage = document.getElementById('page-cam-deviations');
+  if (!deviationsPage) return errors;
+
+  const rows = deviationsPage.querySelectorAll('table.data-table tbody tr');
+  rows.forEach(row => {
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    if (checkbox && checkbox.checked) {
+      const inputs = row.querySelectorAll('input[type="text"]');
+      if (inputs.length >= 3) {
+        // Last two text inputs are Justification/Mitigants and Remarks
+        const justification = inputs[inputs.length - 2].value.trim();
+        const remarks = inputs[inputs.length - 1].value.trim();
+        if (!justification || !remarks) {
+          errors.push(row);
+        }
+      }
+    }
+  });
+  return errors;
+}
+
+
+// =============================================
+// CAM SHEET CHANGE TRACKING
+// =============================================
+
+function initCamSheetChangeTracking() {
+  // Track changes on all CAM sheet pages and extra fields
+  const camPages = document.querySelectorAll('[id^="page-cam-"]');
+  camPages.forEach(page => {
+    // Skip the deviations page — changes there shouldn't trigger staleness
+    if (page.id === 'page-cam-deviations') return;
+    page.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('change', () => { state.camSheetLastUpdated = Date.now(); });
+      if (field.tagName !== 'SELECT') {
+        field.addEventListener('input', () => { state.camSheetLastUpdated = Date.now(); });
+      }
+    });
+  });
 }
 
 
@@ -816,6 +1069,70 @@ function updateSimButtons() {
 
 
 // =============================================
+// EXTRA FIELDS - DEFAULT VALUES (pre-fill for prototype)
+// =============================================
+function prefillExtraFields() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  const chk = (id, on) =>  { const el = document.getElementById(id); if (el) el.checked = on; };
+
+  // Income (Monthly) — Applicant
+  set('ef_I_Net_A', 85000);
+  set('ef_I_Inc_A', 5000);
+  set('ef_I_Bon_A', 12000);
+  set('ef_I_Pen_A', 0);
+  set('ef_I_Alw_A', 3000);
+  set('ef_I_Ren_A', 15000);
+  set('ef_I_Dai_A', 0);
+  set('ef_I_Tui_A', 0);
+  set('ef_I_PT_A', 0);
+
+  // Income — Co-applicant 1
+  set('ef_I_Net_C1', 45000);
+  set('ef_I_Inc_C1', 0);
+  set('ef_I_Bon_C1', 6000);
+  set('ef_I_Pen_C1', 0);
+  set('ef_I_Alw_C1', 0);
+  set('ef_I_Ren_C1', 0);
+  set('ef_I_Dai_C1', 0);
+  set('ef_I_Tui_C1', 0);
+  set('ef_I_PT_C1', 0);
+
+  // Income — Co-applicant 2
+  set('ef_I_Net_C2', 32000);
+  set('ef_I_Inc_C2', 0);
+  set('ef_I_Bon_C2', 0);
+  set('ef_I_Pen_C2', 0);
+  set('ef_I_Alw_C2', 0);
+  set('ef_I_Ren_C2', 0);
+  set('ef_I_Dai_C2', 0);
+  set('ef_I_Tui_C2', 0);
+  set('ef_I_PT_C2', 0);
+
+  // Obligations (Monthly)
+  set('ef_O_EMI_A', 8500);
+  set('ef_O_EMI_C1', 4000);
+  set('ef_O_EMI_C2', 0);
+  set('ef_O_CC_A', 25000);
+  set('ef_O_CC_C1', 10000);
+  set('ef_O_CC_C2', 0);
+
+  // Property & CERSAI
+  set('ef_Residual_Life_Years', 35);
+  set('ef_CERSAI_Search_Done', 'Yes');
+  set('ef_CERSAI_Clear', 'Yes');
+
+  // Verification — check all visit/verified boxes for applicant
+  chk('ef_Res_Visit_App', true);
+  chk('ef_Office_Visit_App', true);
+  chk('ef_Emp_Verified_App', true);
+  chk('ef_Emp_Photos_App', true);
+  chk('ef_Res_Visit_CA1', true);
+  chk('ef_Office_Visit_CA1', true);
+  chk('ef_Emp_Verified_CA1', true);
+  chk('ef_Emp_Photos_CA1', true);
+  chk('ef_Res_Visit_CA2', true);
+}
+
 // EXTRA FIELDS - INTERACTIVE LOGIC
 // =============================================
 function initExtraFields() {
@@ -865,6 +1182,7 @@ function initExtraFields() {
 
   // --- Checkbox → conditional row toggles ---
   const condPairs = [
+    ['ef_Firm_Income_Considered', 'ef_row_All_Partners'],
     ['ef_Guarantor_Required',     'ef_row_Guarantor_Name'],
     ['ef_Non_RERA_Project',       'ef_row_Company_Exposure'],
   ];
@@ -896,34 +1214,29 @@ function initExtraFields() {
     });
   });
 
-  // --- Gold loan: per-person toggle for Outstanding + EMI cells ---
-  const goldPersonMap = { ef_gold_App: 'A', ef_gold_CA1: 'C1', ef_gold_CA2: 'C2', ef_gold_CA3: 'C3' };
-  function syncGold() {
-    const anyGold = [...$$('.ef-gold-chk')].some(c => c.checked);
-    tog($('#ef_tr_GP'), anyGold);
-    tog($('#ef_tr_GE'), anyGold);
-    Object.entries(goldPersonMap).forEach(([chkId, p]) => {
-      const checked = $('#' + chkId).checked;
-      const gpCell = $('#ef_gp_cell_' + p);
-      const geCell = $('#ef_ge_' + p);
-      if (gpCell) gpCell.classList.toggle('gold-active', checked);
-      if (geCell) geCell.classList.toggle('gold-active', checked);
+  // --- Gold loan per-person: if ANY checked → show Gold POS + EMI rows ---
+  $$('.ef-gold-chk').forEach(chk => {
+    chk.addEventListener('change', function () {
+      const anyGold = [...$$('.ef-gold-chk')].some(c => c.checked);
+      tog($('#ef_tr_GP'), anyGold);
+      tog($('#ef_tr_GE'), anyGold);
     });
-  }
-  $$('.ef-gold-chk').forEach(chk => chk.addEventListener('change', syncGold));
+  });
 
-  // --- Education loan: per-person toggle for EMI cells ---
-  const eduPersonMap = { ef_edu_App: 'A', ef_edu_CA1: 'C1', ef_edu_CA2: 'C2', ef_edu_CA3: 'C3' };
-  function syncEdu() {
-    const anyEdu = [...$$('.ef-edu-chk')].some(c => c.checked);
-    tog($('#ef_tr_Edu'), anyEdu);
-    Object.entries(eduPersonMap).forEach(([chkId, p]) => {
-      const checked = $('#' + chkId).checked;
-      const cell = $('#ef_edu_cell_' + p);
-      if (cell) cell.classList.toggle('edu-active', checked);
+  // --- Gold POS > 0 → gold EMI cell (per person) ---
+  $$('.ef-gp').forEach(inp => {
+    inp.addEventListener('input', function () {
+      tog($('#ef_ge_' + this.dataset.p), (+this.value || 0) > 0);
     });
-  }
-  $$('.ef-edu-chk').forEach(chk => chk.addEventListener('change', syncEdu));
+  });
+
+  // --- Education loan per-person: if ANY checked → show Education EMI row ---
+  $$('.ef-edu-chk').forEach(chk => {
+    chk.addEventListener('change', function () {
+      const anyEdu = [...$$('.ef-edu-chk')].some(c => c.checked);
+      tog($('#ef_tr_Edu'), anyEdu);
+    });
+  });
 
   // Initialize on load
   syncCA();
@@ -954,9 +1267,8 @@ function initEventListeners() {
   // CAM: Send for Approval
   document.getElementById('btn-send-approval').addEventListener('click', handleSendForApproval);
 
-  // CAM: Run BRE buttons
+  // CAM: Run BRE button
   document.getElementById('btn-run-cam-bre').addEventListener('click', runCamBREFromPage);
-  document.getElementById('btn-run-cam-bre-2').addEventListener('click', runCamBREFromPage);
 
   // Modal overlay click to close
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
@@ -976,7 +1288,11 @@ function initEventListeners() {
 function init() {
   initEventListeners();
   initSimulator();
+  prefillExtraFields();
   initExtraFields();
+  initCamSheetChangeTracking();
+  // Open directly on CAM Sheet tab
+  switchTab('cam');
 }
 
 document.addEventListener('DOMContentLoaded', init);
