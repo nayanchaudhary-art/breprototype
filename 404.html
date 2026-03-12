@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    var path = window.location.pathname;
+    if (path.endsWith(')')) {
+      window.location.replace(path.slice(0, -1));
+    } else {
+      window.location.replace('/breprototype/');
+    }
+  </script>
+</head>
+<body>
+  <p>Redirecting... <a href="/breprototype/">Click here</a> if not redirected.</p>
+</body>
+</html>
