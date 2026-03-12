@@ -1027,7 +1027,7 @@ function generateCoApplicantCard(idx) {
   return `
   <div class="ef-person-card" id="ef_ca_card_${idx}" data-ca-idx="${idx}">
     <div class="ef-person-card-header" onclick="togglePersonCard(this)">
-      <span>Co-Applicant ${idx}</span>
+      <span>Co-Applicant ${idx} <span style="font-weight:400; font-size:11px; margin-left:10px; color:#ddd;">CA${idx}_Name &nbsp;|&nbsp; Customer ID: 9326${idx + 5}</span></span>
       <span class="acc-chevron">&#9660;</span>
     </div>
     <div class="ef-person-card-body">
@@ -1130,7 +1130,7 @@ function generateGuarantorCard(idx) {
   return `
   <div class="ef-person-card" id="ef_guar_card_${idx}" data-guar-idx="${idx}">
     <div class="ef-person-card-header" onclick="togglePersonCard(this)">
-      <span>Guarantor ${idx}</span>
+      <span>Guarantor ${idx} <span style="font-weight:400; font-size:11px; margin-left:10px; color:#ddd;">GR${idx}_Name &nbsp;|&nbsp; Customer ID: 4421${idx}</span></span>
       <span class="acc-chevron">&#9660;</span>
     </div>
     <div class="ef-person-card-body">
