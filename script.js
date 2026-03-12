@@ -27,90 +27,70 @@ const state = {
 // MOCK DATA: All rules per block (flat arrays)
 // =============================================
 
-// --- Pre-Deal Rules (No deviations — only Passed or Failed) ---
-// Based on BRE Policy Reference Guide v3
+// --- Pre-Deal Rules (No deviations -- only Passed or Failed) ---
 const preDealAllRules = [
-  // Bureau & Credit (6)
   { block: 'Bureau & Credit', name: 'Bureau Score - Applicant', actual: '720', threshold: '>= 650', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Bureau Score - Co-Applicant', actual: '620', threshold: '>= 650', passStatus: 'passed', failStatus: 'deviated' },
   { block: 'Bureau & Credit', name: 'Bureau Overdue - Applicant', actual: 'Rs. 0', threshold: 'No overdue', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Bureau Overdue - Co-Applicant', actual: 'Rs. 0', threshold: 'No overdue', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Wilful Defaulter - Applicant', actual: 'No', threshold: 'Not WD', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Wilful Defaulter - Co-Applicant', actual: 'No', threshold: 'Not WD', passStatus: 'passed', failStatus: 'passed' },
-  // Age Eligibility (4)
   { block: 'Age Eligibility', name: 'Min Age - Applicant', actual: '32 years', threshold: '>= 21 years', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Age Eligibility', name: 'Max Age at Maturity - Applicant', actual: '52 years', threshold: '<= 60 years', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Age Eligibility', name: 'Min Age - Co-Applicant', actual: '29 years', threshold: '>= 21 years', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Age Eligibility', name: 'Max Age at Maturity - Co-Applicant', actual: '49 years', threshold: '<= 70 years', passStatus: 'passed', failStatus: 'passed' },
-  // Income & Employment (4)
   { block: 'Income & Employment', name: 'Applicant Is Income Earner', actual: 'Yes', threshold: 'Required', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Income & Employment', name: 'Minimum Monthly Income', actual: '\u20B912,000', threshold: '>= \u20B915,000', passStatus: 'passed', failStatus: 'failed' },
   { block: 'Income & Employment', name: 'Current Employment Vintage', actual: '8 months', threshold: '>= 1 year', passStatus: 'passed', failStatus: 'failed' },
   { block: 'Income & Employment', name: 'Total Employment Experience', actual: '5 years', threshold: '>= 2 years', passStatus: 'passed', failStatus: 'passed' },
-  // Loan Parameters (4)
   { block: 'Loan Parameters', name: 'Minimum Loan Amount', actual: '\u20B925,00,000', threshold: '>= \u20B91,00,000', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Maximum Customer Exposure', actual: '\u20B925,00,000', threshold: '<= \u20B91,00,00,000', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Product Eligibility', actual: 'Eligible', threshold: 'Eligible', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Max Loans per Property', actual: '1', threshold: '<= 2', passStatus: 'passed', failStatus: 'passed' },
-  // Tenure (2)
   { block: 'Tenure', name: 'Minimum Tenure', actual: '240 months', threshold: '>= 12 months', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Tenure', name: 'Maximum Tenure', actual: '20 years', threshold: '<= 25 years', passStatus: 'passed', failStatus: 'passed' },
-  // Co-Applicant & Guarantor (4)
   { block: 'Co-Applicant & Guarantor', name: 'Co-Applicant Mandatory', actual: 'Present', threshold: 'Required', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Co-Applicant & Guarantor', name: 'Guarantor Bureau Score', actual: '710', threshold: '>= 650', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Co-Applicant & Guarantor', name: 'Guarantor Wilful Defaulter', actual: 'No', threshold: 'Not WD', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Co-Applicant & Guarantor', name: 'Guarantor Age', actual: '45 years', threshold: '18-70 years', passStatus: 'passed', failStatus: 'passed' },
-  // Residence Stability (2)
   { block: 'Residence Stability', name: 'Duration in Current City', actual: '5 years', threshold: '>= 2 years', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Residence Stability', name: 'Duration at Current Residence', actual: '3 years', threshold: '>= 6 months', passStatus: 'passed', failStatus: 'passed' },
-  // Property & Sanctioning (2)
   { block: 'Property & Sanctioning', name: 'Third Dwelling Unit Check', actual: '1st unit', threshold: '<= 2 units', passStatus: 'passed', failStatus: 'passed' },
   { block: 'Property & Sanctioning', name: 'Branch Sanctioning Limit', actual: '\u20B925,00,000', threshold: '<= \u20B950,00,000', passStatus: 'passed', failStatus: 'passed' },
 ];
 
 // --- CAM Rules ---
-// Based on BRE Policy Reference Guide v3
 const camAllRules = [
-  // Bureau & Credit (6)
   { block: 'Bureau & Credit', name: 'Bureau Score - Applicant', actual: '720', threshold: '>= 650', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Bureau Score - Co-Applicant', actual: '620', threshold: '>= 650', passStatus: 'passed', deviatedStatus: 'deviated', failStatus: 'deviated', devLevel: 'L3', devRule: 'Bureau score > 0 and < 650' },
   { block: 'Bureau & Credit', name: 'Bureau Overdue - Applicant', actual: 'Rs. 0', threshold: 'No overdue', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Bureau Overdue - Co-Applicant', actual: 'Rs. 8,000', threshold: 'No overdue', passStatus: 'passed', deviatedStatus: 'deviated', failStatus: 'deviated', devLevel: 'L2', devRule: 'Overdue up to Rs. 10,000' },
   { block: 'Bureau & Credit', name: 'Wilful Defaulter - Applicant', actual: 'No', threshold: 'Not WD', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Bureau & Credit', name: 'Wilful Defaulter - Co-Applicant', actual: 'No', threshold: 'Not WD', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Age Eligibility (3)
   { block: 'Age Eligibility', name: 'Min Age - Applicant', actual: '32 years', threshold: '>= 21 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Age Eligibility', name: 'Max Age at Maturity - Applicant', actual: '52 years', threshold: '<= 60 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Age Eligibility', name: 'Age - Co-Applicant', actual: '29 years', threshold: '21-70 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Income & Employment (4)
   { block: 'Income & Employment', name: 'Applicant Is Income Earner', actual: 'Yes', threshold: 'Required', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Income & Employment', name: 'Minimum Monthly Income', actual: '\u20B972,000', threshold: '>= \u20B915,000', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'failed' },
   { block: 'Income & Employment', name: 'Current Employment Vintage', actual: '2.5 years', threshold: '>= 1 year', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Income & Employment', name: 'Total Employment Experience', actual: '5 years', threshold: '>= 2 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Loan Parameters (4)
   { block: 'Loan Parameters', name: 'Minimum Loan Amount', actual: '\u20B925,00,000', threshold: '>= \u20B91,00,000', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Maximum Customer Exposure', actual: '\u20B925,00,000', threshold: '<= \u20B91,00,00,000', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Branch Sanctioning Limit', actual: '\u20B925,00,000', threshold: '<= \u20B950,00,000', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Loan Parameters', name: 'Max Loans per Property', actual: '1', threshold: '<= 2', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // LTV (3)
   { block: 'LTV', name: 'LTV - Policy Limit', actual: '83%', threshold: '<= 80%', passStatus: 'passed', deviatedStatus: 'deviated', failStatus: 'deviated', devLevel: 'L3', devRule: 'LTV exceeds policy by up to 5%' },
   { block: 'LTV', name: 'LTV - Regulatory Limit', actual: '83%', threshold: '<= 90%', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'failed' },
   { block: 'LTV', name: 'LTV - Property Type', actual: 'Residential', threshold: 'Allowed types', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // FOIR (3)
   { block: 'FOIR', name: 'FOIR Check', actual: '53%', threshold: '<= 50%', passStatus: 'passed', deviatedStatus: 'deviated', failStatus: 'deviated', devLevel: 'L3', devRule: 'FOIR exceeds limit by up to 5%' },
   { block: 'FOIR', name: 'FOIR - Net Income Basis', actual: '53%', threshold: '<= 65%', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'FOIR', name: 'FOIR - Combined Income', actual: '38%', threshold: '<= 60%', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Tenure (2)
   { block: 'Tenure', name: 'Minimum Tenure', actual: '240 months', threshold: '>= 12 months', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Tenure', name: 'Maximum Tenure', actual: '20 years', threshold: '<= 25 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Property (3)
   { block: 'Property', name: 'Minimum Carpet Area', actual: '850 sq ft', threshold: '>= 270 sq ft', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Property', name: 'Property Age', actual: '42 years', threshold: '<= 40 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'failed' },
   { block: 'Property', name: 'CERSAI Check', actual: 'Clear', threshold: 'Clear', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Co-Applicant & Guarantor (2)
   { block: 'Co-Applicant & Guarantor', name: 'Co-Applicant Mandatory', actual: 'Present', threshold: 'Required', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Co-Applicant & Guarantor', name: 'Guarantor Bureau Score', actual: '710', threshold: '>= 650', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
-  // Residence Stability (2)
   { block: 'Residence Stability', name: 'Duration in Current City', actual: '5 years', threshold: '>= 2 years', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
   { block: 'Residence Stability', name: 'Duration at Current Residence', actual: '3 years', threshold: '>= 6 months', passStatus: 'passed', deviatedStatus: 'passed', failStatus: 'passed' },
 ];
@@ -121,7 +101,6 @@ const camAllRules = [
 // =============================================
 function getPreDealRules(variation) {
   const statusKey = variation === 'passed' ? 'passStatus' : 'failStatus';
-  // Pre-Deal BRE rule: deviated results are treated as passed
   return preDealAllRules.map(r => {
     const raw = r[statusKey];
     return { ...r, status: raw === 'deviated' ? 'passed' : raw };
@@ -161,7 +140,6 @@ function switchTab(tabName) {
 // SIDEBAR NAVIGATION
 // =============================================
 function navigateToPage(pageId) {
-  // Guard: Block navigation to Deviations if BRE hasn't been run
   if (pageId === 'cam-deviations' && !state.camBRERun) {
     showModal(`
       <div class="modal-header">
@@ -188,7 +166,6 @@ function navigateToPage(pageId) {
   if (tab === 'predeal') state.currentPredealPage = pageId;
   else if (tab === 'cam') state.currentCamPage = pageId;
 
-  // Render BRE data when navigating to deviations page
   if (pageId === 'cam-deviations') {
     renderBREDataOnDeviationsPage();
   }
@@ -278,24 +255,19 @@ function renderPassedTable(rules) {
     </div>`;
 }
 
-// --- Pre-Deal BRE Results (3 cards: Total, Passed, Failed — no Deviated, no Eligible Amount) ---
 function renderPreDealBREResults() {
   const variation = state.simPreDeal;
   const rules = getPreDealRules(variation);
-
   const passed = rules.filter(r => r.status === 'passed');
   const failed = rules.filter(r => r.status === 'failed');
   const total = rules.length;
-
   const overallStatus = failed.length > 0 ? 'failed' : 'passed';
   const statusIcon = overallStatus === 'passed' ? '&#10004;' : '&#10006;';
   const statusText = overallStatus === 'passed' ? 'Passed' : 'Failed';
-
   state.preDealBREStatus = overallStatus;
 
   const container = document.getElementById('predeal-bre-dynamic-content');
   container.innerHTML = `
-    <!-- Overall Status -->
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
       <span style="font-size:14px; font-weight:600;">Overall BRE Status:</span>
       <span class="bre-status-badge ${overallStatus}" style="font-size:14px; padding:5px 16px;">
@@ -303,45 +275,26 @@ function renderPreDealBREResults() {
       </span>
       <span style="font-size:11px; color:#999; margin-left:8px;">Last run: ${getCurrentTimestamp()}</span>
     </div>
-
-    <!-- Summary Cards (Pre-Deal: 3 cards only — no Deviated, no Eligible Amount) -->
     <div class="summary-cards" style="grid-template-columns: repeat(3, 1fr);">
-      <div class="summary-card total">
-        <div class="card-value">${total}</div>
-        <div class="card-label">Total Applicable Rules</div>
-      </div>
-      <div class="summary-card passed">
-        <div class="card-value">${passed.length}</div>
-        <div class="card-label">Total Passed</div>
-      </div>
-      <div class="summary-card failed">
-        <div class="card-value">${failed.length}</div>
-        <div class="card-label">Total Failed</div>
-      </div>
+      <div class="summary-card total"><div class="card-value">${total}</div><div class="card-label">Total Applicable Rules</div></div>
+      <div class="summary-card passed"><div class="card-value">${passed.length}</div><div class="card-label">Total Passed</div></div>
+      <div class="summary-card failed"><div class="card-value">${failed.length}</div><div class="card-label">Total Failed</div></div>
     </div>
-
-    <!-- Rule Tables (no Deviated table for Pre-Deal) -->
     ${renderFailedTable(failed)}
     ${renderPassedTable(passed)}
   `;
 }
 
-// --- CAM BRE Results (status computation only — results sub-view removed in v2) ---
 function renderCamBREResults() {
   const variation = state.simCam;
   const rules = getCamRules(variation);
-
   const failed = rules.filter(r => r.status === 'failed');
   const deviated = rules.filter(r => r.status === 'deviated');
-
   let overallStatus;
   if (failed.length > 0) overallStatus = 'failed';
   else if (deviated.length > 0) overallStatus = 'deviated';
   else overallStatus = 'passed';
-
   state.camBREStatus = overallStatus;
-
-  // Update BRE data on deviations page if visible
   renderBREDataOnDeviationsPage();
 }
 
@@ -350,7 +303,6 @@ function renderCamBREResults() {
 // PRE-DEAL BRE FLOW
 // =============================================
 
-// "Send to CAM Sheet" ALWAYS triggers fresh BRE run — never assumes prior result
 function handleSendToCamSheet() {
   showModal(`
     <div class="modal-header">
@@ -377,7 +329,6 @@ function runPreDealBREFromModal() {
       </div>
     </div>
   `);
-
   setTimeout(() => {
     state.preDealBRERun = true;
     renderPreDealBREResults();
@@ -391,13 +342,10 @@ function showPreDealBREStatusModal() {
   const statusClass = status === 'passed' ? 'passed' : 'failed';
   const statusIcon = status === 'passed' ? '&#10004;' : '&#10006;';
   const statusText = status === 'passed' ? 'Passed' : 'Failed';
-
   const failCount = getPreDealRules(state.simPreDeal).filter(r => r.status === 'failed').length;
-
   const bodyMessage = status === 'passed'
     ? 'All Pre-Deal BRE rules have passed successfully. You may proceed to send the data to the CAM sheet.'
     : failCount + ' rules in Pre-Deal BRE have failed.';
-
   const linkText = status === 'passed' ? 'View full results' : 'View failed rules';
 
   showModal(`
@@ -478,7 +426,6 @@ function runPreDealBREFromPage() {
       </div>
     </div>
   `);
-
   setTimeout(() => {
     state.preDealBRERun = true;
     renderPreDealBREResults();
@@ -498,32 +445,20 @@ function showPreDealBREPage() {
 // =============================================
 
 // =============================================
-// EXTRA FIELDS VALIDATION
+// EXTRA FIELDS VALIDATION (v4 - accordion/toggle)
 // =============================================
 
 function validateExtraFields() {
   const missing = [];
-  const $ = s => document.querySelector(s);
-  const n = +$('#ef_CoApplicant_Count').value;
+  const getVal = id => { const el = document.getElementById(id); return el ? el.value : ''; };
 
-  // Check key income fields
-  const netIncome = $('#ef_I_Net_A');
-  if (netIncome && (!netIncome.value || +netIncome.value === 0)) missing.push('Net Business / Salary (Applicant)');
+  if (!getVal('ef_INP_132')) missing.push('Scheme');
 
-  // Check Residual Life
-  const residual = $('#ef_Residual_Life_Years');
-  if (residual && (!residual.value || +residual.value === 0)) missing.push('Residual Life (Years)');
+  const salary = getVal('ef_INP_028_A');
+  if (!salary || +salary === 0) missing.push('Applicant Core Salary / Business Income');
 
-  // Check Wilful Defaulter fields
-  const wdApp = $('#ef_WD_App');
-  if (wdApp && !wdApp.value) missing.push('Wilful Defaulter (Applicant)');
-
-  // Check CERSAI
-  const cersai = $('#ef_CERSAI_Search_Done');
-  if (cersai && cersai.value === 'Yes') {
-    const cersaiClear = $('#ef_CERSAI_Clear');
-    if (cersaiClear && !cersaiClear.value) missing.push('CERSAI Clear');
-  }
+  const residual = getVal('ef_INP_182');
+  if (!residual || +residual === 0) missing.push('Estimated Residual Life (Years)');
 
   return missing;
 }
@@ -531,24 +466,22 @@ function validateExtraFields() {
 // LOS compulsory input fields validation (simulated)
 function validateLOSFields() {
   const missing = [];
-  // Simulate checking LOS fields — in production, these would come from the actual LOS data
-  // For prototype: randomly pass or check a few fields from the CAM sheet
   return missing;
 }
 
-// Save Extra Fields only — does NOT run BRE
+// Save Extra Fields only -- does NOT run BRE
 function saveExtraFields() {
   const missingFields = validateExtraFields();
   if (missingFields.length > 0) {
     const fieldList = missingFields.map(f => '<li>' + f + '</li>').join('');
     showModal(`
       <div class="modal-header">
-        <span class="modal-title">Extra Fields Missing</span>
+        <span class="modal-title">Fields Missing</span>
         <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body">
         <div class="modal-icon" style="color: var(--warning-orange);">&#9888;</div>
-        <div class="modal-text" style="text-align:left;">Some extra fields are missing. Please fill them and then proceed.<ul style="margin-top:8px; padding-left:20px;">${fieldList}</ul></div>
+        <div class="modal-text" style="text-align:left;">Some required fields are missing. Please fill them and then proceed.<ul style="margin-top:8px; padding-left:20px;">${fieldList}</ul></div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-ghost" onclick="closeModal()">Close</button>
@@ -557,12 +490,11 @@ function saveExtraFields() {
     return;
   }
 
-  // Save fields
   showModal(`
     <div class="modal-body">
       <div class="loading-spinner">
         <div class="spinner"></div>
-        <div class="loading-text">Saving extra fields...</div>
+        <div class="loading-text">Saving all fields...</div>
       </div>
     </div>
   `);
@@ -576,7 +508,7 @@ function saveExtraFields() {
       </div>
       <div class="modal-body">
         <div class="modal-icon" style="color: var(--success-green);">&#10004;</div>
-        <div class="modal-text" style="color: var(--success-green); font-weight:600;">Extra fields saved successfully. You can now run CAM BRE.</div>
+        <div class="modal-text" style="color: var(--success-green); font-weight:600;">All fields saved successfully. You can now run CAM BRE.</div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" onclick="closeModal(); runCamBREFromPage();">Run CAM BRE</button>
@@ -586,7 +518,7 @@ function saveExtraFields() {
   }, 1200);
 }
 
-// Run CAM BRE from page button — checks extra fields saved first
+// Run CAM BRE from page button
 function runCamBREFromPage() {
   if (!state.extraFieldsSaved) {
     showModal(`
@@ -605,7 +537,6 @@ function runCamBREFromPage() {
     return;
   }
 
-  // Check LOS compulsory fields
   const losMissing = validateLOSFields();
   if (losMissing.length > 0) {
     const fieldList = losMissing.map(f => '<li>' + f + '</li>').join('');
@@ -695,9 +626,8 @@ function showCamBREStatusModal(source) {
   `);
 }
 
-// Send for Approval — 4-case flow with staleness detection
+// Send for Approval
 function handleSendForApproval() {
-  // Case 0: BRE never ran — offer to run inline
   if (!state.camBRERun) {
     showModal(`
       <div class="modal-header">
@@ -716,7 +646,6 @@ function handleSendForApproval() {
     return;
   }
 
-  // Case 3: Fields updated after last BRE run
   if (state.camSheetLastUpdated !== null && state.camSheetLastUpdated >= state.lastBRERunTime) {
     showModal(`
       <div class="modal-header">
@@ -735,7 +664,6 @@ function handleSendForApproval() {
     return;
   }
 
-  // Case: BRE failed — block submission
   if (state.camBREStatus === 'failed') {
     const rules = getCamRules(state.simCam);
     const failedCount = rules.filter(r => r.status === 'failed').length;
@@ -760,7 +688,6 @@ function handleSendForApproval() {
     return;
   }
 
-  // Case 1: Ticked deviations missing mitigants/remarks
   {
     const devErrors = getDeviationValidationErrors();
     if (devErrors.length > 0) {
@@ -782,7 +709,6 @@ function handleSendForApproval() {
     }
   }
 
-  // Case 2: All clear — confirm
   showModal(`
     <div class="modal-header">
       <span class="modal-title">Confirm</span>
@@ -837,37 +763,21 @@ function renderBREDataOnDeviationsPage() {
 function renderBRESummaryOnDeviationsPage() {
   const container = document.getElementById('bre-summary-section');
   if (!container) return;
-
-  if (!state.camBRERun) {
-    container.innerHTML = '';
-    return;
-  }
-
+  if (!state.camBRERun) { container.innerHTML = ''; return; }
   const status = state.camBREStatus;
   const statusClass = status === 'passed' ? 'passed' : status === 'deviated' ? 'deviated' : 'failed';
   const statusIcon = status === 'passed' ? '&#10004;' : status === 'deviated' ? '&#9888;' : '&#10006;';
   const statusText = status.charAt(0).toUpperCase() + status.slice(1);
-
   container.innerHTML = `<span class="bre-status-badge ${statusClass}" style="font-size: 12px; padding: 3px 12px;">${statusIcon} ${statusText}</span>`;
 }
 
 function renderFailedRulesOnDeviationsPage() {
   const container = document.getElementById('bre-failed-rules-section');
   if (!container) return;
-
-  if (!state.camBRERun) {
-    container.innerHTML = '';
-    return;
-  }
-
+  if (!state.camBRERun) { container.innerHTML = ''; return; }
   const rules = getCamRules(state.simCam);
   const failed = rules.filter(r => r.status === 'failed');
-
-  if (failed.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-
+  if (failed.length === 0) { container.innerHTML = ''; return; }
   container.innerHTML = `
     <div class="deviation-section">
       <div class="deviation-section-title" style="color: #c62828;">Failed Rules <span class="count-badge fail" style="color:#fff; font-size:10px; padding:1px 8px; border-radius:10px;">${failed.length}</span></div>
@@ -875,10 +785,7 @@ function renderFailedRulesOnDeviationsPage() {
         <table class="data-table">
           <thead><tr><th>Block Name</th><th>Rule Name</th><th>Actual Value</th><th>Threshold</th></tr></thead>
           <tbody>
-            ${failed.map(r => `<tr>
-              <td>${r.block}</td><td>${r.name}</td>
-              <td class="text-danger fw-bold">${r.actual}</td><td>${r.threshold}</td>
-            </tr>`).join('')}
+            ${failed.map(r => `<tr><td>${r.block}</td><td>${r.name}</td><td class="text-danger fw-bold">${r.actual}</td><td>${r.threshold}</td></tr>`).join('')}
           </tbody>
         </table>
       </div>
@@ -890,36 +797,16 @@ function renderBREIdentifiedDeviations() {
   const section = document.getElementById('bre-identified-deviations-section');
   const tbody = document.getElementById('bre-identified-deviations-tbody');
   if (!tbody) return;
-
-  if (!state.camBRERun) {
-    if (section) section.style.display = 'none';
-    return;
-  }
-
+  if (!state.camBRERun) { if (section) section.style.display = 'none'; return; }
   const deviated = getCamRules(state.simCam).filter(r => r.status === 'deviated');
-
-  if (deviated.length === 0) {
-    if (section) section.style.display = 'none';
-    return;
-  }
-
+  if (deviated.length === 0) { if (section) section.style.display = 'none'; return; }
   if (section) section.style.display = '';
 
-  // Block abbreviation map for ID generation
   const blockAbbrev = {
-    'Bureau & Credit': 'B',
-    'LTV': 'L',
-    'FOIR': 'F',
-    'Income & Employment': 'I',
-    'Age Eligibility': 'A',
-    'Loan Parameters': 'P',
-    'Tenure': 'T',
-    'Property': 'R',
-    'Co-Applicant & Guarantor': 'G',
-    'Residence Stability': 'S'
+    'Bureau & Credit': 'B', 'LTV': 'L', 'FOIR': 'F', 'Income & Employment': 'I',
+    'Age Eligibility': 'A', 'Loan Parameters': 'P', 'Tenure': 'T', 'Property': 'R',
+    'Co-Applicant & Guarantor': 'G', 'Residence Stability': 'S'
   };
-
-  // Count per prefix for sequential IDs
   const counters = {};
   tbody.innerHTML = deviated.map(r => {
     const prefix = blockAbbrev[r.block] || r.block.charAt(0).toUpperCase();
@@ -945,7 +832,6 @@ function renderBREIdentifiedDeviations() {
 function addManualDeviationRow() {
   const tbody = document.getElementById('manual-deviations-tbody');
   if (!tbody) return;
-
   const row = document.createElement('tr');
   row.innerHTML = `
     <td class="cell-center"><input type="checkbox"></td>
@@ -968,19 +854,15 @@ function getDeviationValidationErrors() {
   const errors = [];
   const deviationsPage = document.getElementById('page-cam-deviations');
   if (!deviationsPage) return errors;
-
   const rows = deviationsPage.querySelectorAll('table.data-table tbody tr');
   rows.forEach(row => {
     const checkbox = row.querySelector('input[type="checkbox"]');
     if (checkbox && checkbox.checked) {
       const inputs = row.querySelectorAll('input[type="text"]');
       if (inputs.length >= 3) {
-        // Last two text inputs are Justification/Mitigants and Remarks
         const justification = inputs[inputs.length - 2].value.trim();
         const remarks = inputs[inputs.length - 1].value.trim();
-        if (!justification || !remarks) {
-          errors.push(row);
-        }
+        if (!justification || !remarks) { errors.push(row); }
       }
     }
   });
@@ -993,10 +875,8 @@ function getDeviationValidationErrors() {
 // =============================================
 
 function initCamSheetChangeTracking() {
-  // Track changes on all CAM sheet pages and extra fields
   const camPages = document.querySelectorAll('[id^="page-cam-"]');
   camPages.forEach(page => {
-    // Skip the deviations page — changes there shouldn't trigger staleness
     if (page.id === 'page-cam-deviations') return;
     page.querySelectorAll('input, select, textarea').forEach(field => {
       field.addEventListener('change', () => { state.camSheetLastUpdated = Date.now(); });
@@ -1020,36 +900,23 @@ function initSimulator() {
   toggleBtn.addEventListener('click', () => panel.classList.toggle('active'));
   closeBtn.addEventListener('click', () => panel.classList.remove('active'));
 
-  // Option buttons
   document.querySelectorAll('.sim-option').forEach(btn => {
     btn.addEventListener('click', () => {
-      const simType = btn.dataset.sim;  // 'predeal' or 'cam'
-      const simVal = btn.dataset.val;   // 'passed', 'failed', 'deviated'
-
-      // Update active state for this group
+      const simType = btn.dataset.sim;
+      const simVal = btn.dataset.val;
       const siblings = btn.parentElement.querySelectorAll('.sim-option');
-      siblings.forEach(s => {
-        s.className = 'sim-option'; // reset
-      });
+      siblings.forEach(s => { s.className = 'sim-option'; });
       btn.className = 'sim-option active-' + simVal;
-
-      // Update state
       if (simType === 'predeal') {
         state.simPreDeal = simVal;
-        // If results are already showing, re-render
-        if (state.preDealBRERun) {
-          renderPreDealBREResults();
-        }
+        if (state.preDealBRERun) { renderPreDealBREResults(); }
       } else if (simType === 'cam') {
         state.simCam = simVal;
-        if (state.camBRERun) {
-          renderCamBREResults();
-        }
+        if (state.camBRERun) { renderCamBREResults(); }
       }
     });
   });
 
-  // Set initial active states
   updateSimButtons();
 }
 
@@ -1058,7 +925,6 @@ function updateSimButtons() {
     const simType = btn.dataset.sim;
     const simVal = btn.dataset.val;
     const currentVal = simType === 'predeal' ? state.simPreDeal : state.simCam;
-
     if (simVal === currentVal) {
       btn.className = 'sim-option active-' + simVal;
     } else {
@@ -1069,177 +935,511 @@ function updateSimButtons() {
 
 
 // =============================================
-// EXTRA FIELDS - DEFAULT VALUES (pre-fill for prototype)
+// ACCORDION TOGGLE
+// =============================================
+function toggleAccordion(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('collapsed');
+}
+
+function togglePersonCard(el) {
+  const card = el.closest('.ef-person-card');
+  if (card) card.classList.toggle('collapsed');
+}
+
+// =============================================
+// EXTRA FIELDS - DEFAULT VALUES (pre-fill for prototype v4)
 // =============================================
 function prefillExtraFields() {
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
-  const chk = (id, on) =>  { const el = document.getElementById(id); if (el) el.checked = on; };
 
-  // Income (Monthly) — Applicant
-  set('ef_I_Net_A', 85000);
-  set('ef_I_Inc_A', 5000);
-  set('ef_I_Bon_A', 12000);
-  set('ef_I_Pen_A', 0);
-  set('ef_I_Alw_A', 3000);
-  set('ef_I_Ren_A', 15000);
-  set('ef_I_Dai_A', 0);
-  set('ef_I_Tui_A', 0);
-  set('ef_I_PT_A', 0);
+  // Case Setup (SIM)
+  set('ef_INP_132', 'HOME LOAN');
+  set('ef_CoApplicant_Count', '2');
+  set('ef_Guarantor_Count', '0');
 
-  // Income — Co-applicant 1
-  set('ef_I_Net_C1', 45000);
-  set('ef_I_Inc_C1', 0);
-  set('ef_I_Bon_C1', 6000);
-  set('ef_I_Pen_C1', 0);
-  set('ef_I_Alw_C1', 0);
-  set('ef_I_Ren_C1', 0);
-  set('ef_I_Dai_C1', 0);
-  set('ef_I_Tui_C1', 0);
-  set('ef_I_PT_C1', 0);
+  // Applicant Profile
+  set('ef_INP_016_A', 'Normal');
 
-  // Income — Co-applicant 2
-  set('ef_I_Net_C2', 32000);
-  set('ef_I_Inc_C2', 0);
-  set('ef_I_Bon_C2', 0);
-  set('ef_I_Pen_C2', 0);
-  set('ef_I_Alw_C2', 0);
-  set('ef_I_Ren_C2', 0);
-  set('ef_I_Dai_C2', 0);
-  set('ef_I_Tui_C2', 0);
-  set('ef_I_PT_C2', 0);
+  // Applicant Credit
+  set('ef_INP_015_A', 'No');
+  set('ef_INP_018_A', 'No');
+  set('ef_INP_222_A', 'No');
+  set('ef_INP_223_A', 'No');
 
-  // Obligations (Monthly)
-  set('ef_O_EMI_A', 8500);
-  set('ef_O_EMI_C1', 4000);
-  set('ef_O_EMI_C2', 0);
-  set('ef_O_CC_A', 25000);
-  set('ef_O_CC_C1', 10000);
-  set('ef_O_CC_C2', 0);
+  // Applicant Employment
+  set('ef_INP_008_A', '96');
+  set('ef_INP_009_A', 'No');
+  set('ef_INP_010_A', 'No');
+  set('ef_INP_010B_A', 'No');
+  set('ef_INP_012_A', '8');
 
-  // Property & CERSAI
-  set('ef_Residual_Life_Years', 35);
-  set('ef_CERSAI_Search_Done', 'Yes');
-  set('ef_CERSAI_Clear', 'Yes');
+  // Applicant Exposure & Verification
+  set('ef_INP_019_A', '0');
+  set('ef_INP_020_A', '0');
+  set('ef_INP_021_A', 'Yes');
+  set('ef_INP_024_A', 'Yes');
+  set('ef_INP_136_A', '8500');
+  set('ef_INP_025_A', 'Yes');
+  set('ef_INP_026_A', 'Yes');
+  // Applicant Income
+  set('ef_INP_028_A', '85000');
+  set('ef_INP_029_A', '5000');
+  set('ef_INP_030_A', '3000');
+  set('ef_INP_031_A', '12000');
+  set('ef_INP_032_A', '0');
+  set('ef_INP_033_A', '15000');
+  set('ef_INP_034_A', '0');
+  set('ef_INP_035_A', '0');
+  set('ef_INP_036_A', '0');
 
-  // Verification — check all visit/verified boxes for applicant
-  chk('ef_Res_Visit_App', true);
-  chk('ef_Office_Visit_App', true);
-  chk('ef_Emp_Verified_App', true);
-  chk('ef_Emp_Photos_App', true);
-  chk('ef_Res_Visit_CA1', true);
-  chk('ef_Office_Visit_CA1', true);
-  chk('ef_Emp_Verified_CA1', true);
-  chk('ef_Emp_Photos_CA1', true);
-  chk('ef_Res_Visit_CA2', true);
+  // Loan & Obligations
+  set('ef_INP_160', '0');
+  set('ef_INP_144', 'No');
+
+  // Property
+  set('ef_INP_182', '35');
+  set('ef_INP_168', '0');
+  set('ef_INP_171', '60');
+  set('ef_INP_174', 'Self-Occupied');
+  set('ef_INP_163', 'Freehold');
+  set('ef_INP_165', 'Clear');
+  set('ef_INP_170', 'Self-Occupation');
+  set('ef_INP_167', 'No');
+
+  // BT (hidden by default since scheme is HOME LOAN)
+  set('ef_INP_147', '0');
+  set('ef_INP_148', '0');
+  set('ef_INP_190', '0');
+  set('ef_INP_191', '0');
+  set('ef_INP_192', '0');
+  set('ef_INP_193', 'No');
+  set('ef_INP_194', 'No');
 }
 
-// EXTRA FIELDS - INTERACTIVE LOGIC
+
+// =============================================
+// EXTRA FIELDS - DYNAMIC CO-APPLICANT / GUARANTOR GENERATION (v4)
+// =============================================
+
+function generateCoApplicantCard(idx) {
+  const suffix = 'C' + idx;
+  return `
+  <div class="ef-person-card" id="ef_ca_card_${idx}" data-ca-idx="${idx}">
+    <div class="ef-person-card-header" onclick="togglePersonCard(this)">
+      <span>Co-Applicant ${idx}</span>
+      <span class="acc-chevron">&#9660;</span>
+    </div>
+    <div class="ef-person-card-body">
+
+      <div class="ef-block-label">Profile</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Profile Status</label>
+          <select id="ef_INP_016_${suffix}">
+            <option value="Normal" selected>Normal</option>
+            <option value="Caution">Caution</option>
+            <option value="Negative">Negative</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ef-block-label">Credit &amp; Bureau</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Wilful Defaulter?</label>
+          <select id="ef_INP_015_${suffix}"><option value="No" selected>No</option><option value="Yes (currently)">Yes (currently)</option><option value="Not currently but in past">Not currently but in past</option></select>
+        </div>
+        <div class="form-group ef-cond-select" data-cond-field="ef_INP_015_${suffix}" data-cond-value="Not currently but in past">
+          <label>Months Since Removal</label>
+          <input type="number" id="ef_INP_221_${suffix}" min="0" max="600">
+        </div>
+        <div class="form-group">
+          <label>Settlement/Restructure Last 12M?</label>
+          <select id="ef_INP_018_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+        <div class="form-group">
+          <label>Track Record Verified?</label>
+          <select id="ef_INP_222_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+        <div class="form-group">
+          <label>Clearance Proof Available?</label>
+          <select id="ef_INP_223_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+      </div>
+
+      <div class="ef-block-label">Employment &amp; Stability</div>
+      <div class="form-grid">
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried">
+          <label>Total Experience (Months)</label>
+          <input type="number" id="ef_INP_008_${suffix}" min="0" max="1200">
+        </div>
+        <div class="form-group">
+          <label>Duration in Current City (Years)</label>
+          <input type="number" id="ef_INP_012_${suffix}" min="0" max="100" step="0.1">
+        </div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried">
+          <label>Govt. Employee with Pension (OPS)?</label>
+          <select id="ef_INP_010_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried">
+          <label>Currently a Govt. Employee?</label>
+          <select id="ef_INP_010B_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+      </div>
+
+      <div class="ef-block-label">Exposure &amp; Verification</div>
+      <div class="form-grid">
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried,SEP,SENP"><label>Existing Exposure with Company (&#8377;)</label><input type="number" id="ef_INP_019_${suffix}" min="0" step="1"></div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried,SEP,SENP"><label>Properties Already Financed</label><input type="number" id="ef_INP_020_${suffix}" min="0" max="10"></div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried,SEP,SENP"><label>First-Time Home Buyer?</label><select id="ef_INP_021_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select></div>
+        <div class="form-group"><label>Residence Visit Done?</label><select id="ef_INP_024_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select></div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried,SEP,SENP"><label>Total Existing Obligations (&#8377;)</label><input type="number" id="ef_INP_136_${suffix}" min="0" step="1"></div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Cash Salaried,SEP,SENP"><label>Office/Business Visit Done?</label><select id="ef_INP_025_${suffix}"><option value="No">No</option><option value="Yes" selected>Yes</option></select></div>
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="Bank Salaried,Cash Salaried"><label>Employment Verified?</label><select id="ef_INP_026_${suffix}"><option value="No">No</option><option value="Yes" selected>Yes</option></select></div>
+      </div>
+
+      <div class="ef-income-block" data-person="${suffix}">
+      <div class="ef-block-label">Income Details</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Core Salary / Business Income (&#8377;/mo)</label><input type="number" id="ef_INP_028_${suffix}" min="0" step="1"></div>
+      </div>
+      <div class="ef-block-label" style="font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Other Salary Components</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Monthly Incentive / Variable Pay (&#8377;)</label><input type="number" id="ef_INP_029_${suffix}" min="0" step="1"></div>
+        <div class="form-group"><label>Travel &amp; Conveyance Allowance (&#8377;)</label><input type="number" id="ef_INP_030_${suffix}" min="0" step="1"></div>
+        <div class="form-group"><label>Annual Bonus Amount (&#8377;)</label><input type="number" id="ef_INP_031_${suffix}" min="0" step="1"></div>
+        <div class="form-group"><label>Monthly Pension Income (&#8377;)</label><input type="number" id="ef_INP_032_${suffix}" min="0" step="1"></div>
+      </div>
+      <div class="ef-block-label" style="font-size:10px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Other Income Sources</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Monthly Rental Income (&#8377;)</label><input type="number" id="ef_INP_033_${suffix}" min="0" step="1"></div>
+        <div class="form-group"><label>Monthly Dairy Income (&#8377;)</label><input type="number" id="ef_INP_034_${suffix}" min="0" step="1" class="ef-dairy-input" data-person="${suffix}"></div>
+        <div class="form-group ef-cond-dairy" data-person="${suffix}" style="display:none;"><label>No. of Milking Cattle</label><input type="number" id="ef_INP_034B_${suffix}" min="0"></div>
+        <div class="form-group"><label>Monthly Tuition Income (&#8377;)</label><input type="number" id="ef_INP_035_${suffix}" min="0" step="1"></div>
+        <div class="form-group"><label>Part-Time Employment Income (&#8377;)</label><input type="number" id="ef_INP_036_${suffix}" min="0" step="1"></div>
+      </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+function generateGuarantorCard(idx) {
+  const suffix = 'G' + idx;
+  return `
+  <div class="ef-person-card" id="ef_guar_card_${idx}" data-guar-idx="${idx}">
+    <div class="ef-person-card-header" onclick="togglePersonCard(this)">
+      <span>Guarantor ${idx}</span>
+      <span class="acc-chevron">&#9660;</span>
+    </div>
+    <div class="ef-person-card-body">
+
+      <div class="ef-block-label">Profile</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Profile Status</label>
+          <select id="ef_INP_016_${suffix}">
+            <option value="Normal" selected>Normal</option>
+            <option value="Caution">Caution</option>
+            <option value="Negative">Negative</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ef-block-label">Credit &amp; Bureau</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Wilful Defaulter?</label>
+          <select id="ef_INP_015_${suffix}"><option value="No" selected>No</option><option value="Yes (currently)">Yes (currently)</option><option value="Not currently but in past">Not currently but in past</option></select>
+        </div>
+        <div class="form-group ef-cond-select" data-cond-field="ef_INP_015_${suffix}" data-cond-value="Not currently but in past">
+          <label>Months Since Removal</label>
+          <input type="number" id="ef_INP_221_${suffix}" min="0" max="600">
+        </div>
+      </div>
+
+      <div class="ef-block-label">Verification</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Same Guarantor as Existing Loan?</label><select id="ef_INP_114_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select></div>
+        <div class="form-group"><label>Tele-Verification Done?</label><select id="ef_INP_120_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select></div>
+      </div>
+
+      <div class="ef-block-label">Firm &amp; Income</div>
+      <div class="form-grid">
+        <div class="form-group ef-seg-vis" data-person="${suffix}" data-segments="SEP,SENP">
+          <label>Firm Income Considered?</label>
+          <select id="ef_INP_200_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+        <div class="form-group ef-cond-select" data-cond-field="ef_INP_200_${suffix}" data-cond-value="Yes">
+          <label>Firm Added as Guarantor?</label>
+          <select id="ef_INP_201_${suffix}"><option value="No" selected>No</option><option value="Yes">Yes</option></select>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+function prefillCoApplicant(idx) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  const suffix = 'C' + idx;
+  if (idx === 1) {
+    set('ef_INP_016_' + suffix, 'Normal');
+    set('ef_INP_015_' + suffix, 'No');
+    set('ef_INP_018_' + suffix, 'No');
+    set('ef_INP_222_' + suffix, 'No');
+    set('ef_INP_223_' + suffix, 'No');
+    set('ef_INP_008_' + suffix, '48');
+    set('ef_INP_012_' + suffix, '5');
+    set('ef_INP_024_' + suffix, 'Yes');
+    set('ef_INP_136_' + suffix, '5000');
+    set('ef_INP_025_' + suffix, 'Yes');
+    set('ef_INP_026_' + suffix, 'Yes');
+    set('ef_INP_028_' + suffix, '45000');
+    set('ef_INP_031_' + suffix, '6000');
+  } else if (idx === 2) {
+    set('ef_INP_016_' + suffix, 'Normal');
+    set('ef_INP_015_' + suffix, 'No');
+    set('ef_INP_018_' + suffix, 'No');
+    set('ef_INP_222_' + suffix, 'No');
+    set('ef_INP_223_' + suffix, 'No');
+    set('ef_INP_008_' + suffix, '180');
+    set('ef_INP_012_' + suffix, '15');
+    set('ef_INP_024_' + suffix, 'Yes');
+    set('ef_INP_136_' + suffix, '3000');
+    set('ef_INP_025_' + suffix, 'Yes');
+    set('ef_INP_026_' + suffix, 'Yes');
+    set('ef_INP_028_' + suffix, '32000');
+  }
+}
+
+
+// =============================================
+// EXTRA FIELDS - INTERACTIVE LOGIC (v4 - accordion/toggle)
 // =============================================
 function initExtraFields() {
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
-  const tog = (el, on) => { if (el) el.classList.toggle('show', on); };
 
-  // --- Income Considered sync (controls ef-ic1/2/3 columns) ---
-  function syncIncomeConsidered() {
-    const n = +$('#ef_CoApplicant_Count').value;
-    for (let i = 1; i <= 3; i++) {
-      const ic = n >= i && $('#ef_Income_CA' + i).checked;
-      $$('.ef-ic' + i).forEach(e => e.classList.toggle('show', ic));
-    }
-  }
-
-  // --- Co-Applicant Count → columns + income considered + only child ---
+  // --- Generate co-applicant and guarantor cards ---
   function syncCA() {
-    const n = +$('#ef_CoApplicant_Count').value;
-    $$('.ef-c1').forEach(e => e.classList.toggle('show', n >= 1));
-    $$('.ef-c2').forEach(e => e.classList.toggle('show', n >= 2));
-    $$('.ef-c3').forEach(e => e.classList.toggle('show', n >= 3));
-    // Income Considered checkboxes visibility
-    $('#ef_income_considered_group').style.display = n > 0 ? '' : 'none';
-    for (let i = 1; i <= 3; i++) {
-      const el = $('#ef_ic_group_' + i);
-      if (el) el.style.display = n >= i ? '' : 'none';
-    }
-    // Is Only Child checkboxes visibility
-    $('#ef_only_child_group').style.display = n > 0 ? '' : 'none';
-    for (let i = 1; i <= 3; i++) {
-      const el = $('#ef_oc_group_' + i);
-      if (el) el.style.display = n >= i ? '' : 'none';
-    }
-    // Group header colspans
-    $$('#ef_tbl_income tr.ef-group-header td').forEach(td => td.setAttribute('colspan', 2 + n));
-    $$('#ef_tbl_obl tr.ef-group-header td').forEach(td => td.setAttribute('colspan', 2 + n));
-    // Re-sync income considered
-    syncIncomeConsidered();
-  }
-  $('#ef_CoApplicant_Count').addEventListener('change', syncCA);
+    const n = +($('#ef_CoApplicant_Count') || {}).value || 0;
+    const container = document.getElementById('ef_coapplicants_container');
+    if (!container) return;
 
-  // Income Considered checkbox changes
-  for (let i = 1; i <= 3; i++) {
-    $('#ef_Income_CA' + i).addEventListener('change', syncIncomeConsidered);
+    let html = '';
+    for (let i = 1; i <= n; i++) {
+      html += generateCoApplicantCard(i);
+    }
+    container.innerHTML = html;
+
+    const badge = document.getElementById('ca-count-badge');
+    if (badge) badge.textContent = n;
+
+    for (let i = 1; i <= Math.min(n, 2); i++) {
+      prefillCoApplicant(i);
+    }
+
+    updateSimSegmentList();
+    rebindAllLogic();
   }
 
-  // --- Checkbox → conditional row toggles ---
-  const condPairs = [
-    ['ef_Firm_Income_Considered', 'ef_row_All_Partners'],
-    ['ef_Guarantor_Required',     'ef_row_Guarantor_Name'],
-    ['ef_Non_RERA_Project',       'ef_row_Company_Exposure'],
-  ];
-  condPairs.forEach(([chkId, rowId]) => {
-    $('#' + chkId).addEventListener('change', function () {
-      tog($('#' + rowId), this.checked);
+  function syncGuarantors() {
+    const n = +($('#ef_Guarantor_Count') || {}).value || 0;
+    const container = document.getElementById('ef_guarantors_container');
+    if (!container) return;
+
+    let html = '';
+    for (let i = 1; i <= n; i++) {
+      html += generateGuarantorCard(i);
+    }
+    container.innerHTML = html;
+
+    const badge = document.getElementById('guar-count-badge');
+    if (badge) badge.textContent = n;
+
+    updateSimSegmentList();
+    rebindAllLogic();
+  }
+
+  function rebindAllLogic() {
+    bindSelectConditionals();
+    bindSegmentVisibility();
+    bindIncomeBlockVisibility();
+    bindDairyLogic();
+    bindPropertyLogic();
+    bindSchemeLogic();
+  }
+
+  // --- Hide entire income block when segment is "Income not considered" ---
+  function bindIncomeBlockVisibility() {
+    $$('.ef-income-block').forEach(el => {
+      const person = el.dataset.person;
+      if (!person) return;
+      const segSelect = document.getElementById('ef_INP_003_' + person);
+      if (!segSelect) return;
+
+      function update() {
+        el.style.display = segSelect.value === 'Income not considered' ? 'none' : '';
+      }
+      segSelect.removeEventListener('change', update);
+      segSelect.addEventListener('change', update);
+      update();
     });
-  });
+  }
 
-  // --- CERSAI Search Done select → conditional row ---
-  $('#ef_CERSAI_Search_Done').addEventListener('change', function () {
-    tog($('#ef_row_CERSAI_Clear'), this.value === 'Yes');
-  });
+  // --- Select-based conditional visibility (replaces toggle conditionals) ---
+  function bindSelectConditionals() {
+    $$('.ef-cond-select').forEach(el => {
+      const fieldId = el.dataset.condField;
+      const condValue = el.dataset.condValue;
+      if (!fieldId) return;
+      const field = document.getElementById(fieldId);
+      if (!field) return;
 
-  // --- Guarantor TopUp select → conditional row ---
-  $('#ef_G_TopUp').addEventListener('change', function () {
-    tog($('#ef_row_G_Existing'), this.value === 'Yes');
-  });
-
-  // --- BT/TopUp toggle ---
-  $('#ef_Is_BT_TopUp').addEventListener('change', function () {
-    tog($('#ef_bt_details'), this.checked);
-  });
-
-  // --- Dairy income > 0 → cattle count cell ---
-  $$('.ef-dairy').forEach(inp => {
-    inp.addEventListener('input', function () {
-      tog($('#ef_cc_' + this.dataset.p), (+this.value || 0) > 0);
+      function update() {
+        const show = field.value === condValue;
+        el.classList.toggle('ef-cond-hide', !show);
+        if (!show) {
+          el.querySelectorAll('select').forEach(s => { s.selectedIndex = 0; });
+          el.querySelectorAll('input[type="number"], input[type="text"]').forEach(c => { c.value = ''; });
+        }
+      }
+      field.removeEventListener('change', update);
+      field.addEventListener('change', update);
+      update();
     });
-  });
+  }
 
-  // --- Gold loan per-person: if ANY checked → show Gold POS + EMI rows ---
-  $$('.ef-gold-chk').forEach(chk => {
-    chk.addEventListener('change', function () {
-      const anyGold = [...$$('.ef-gold-chk')].some(c => c.checked);
-      tog($('#ef_tr_GP'), anyGold);
-      tog($('#ef_tr_GE'), anyGold);
+  // --- Segment-driven visibility ---
+  function bindSegmentVisibility() {
+    $$('.ef-seg-vis').forEach(el => {
+      const person = el.dataset.person;
+      const segments = (el.dataset.segments || '').split(',');
+      if (!person) return;
+      const segSelect = document.getElementById('ef_INP_003_' + person);
+      if (!segSelect) return;
+
+      function update() {
+        const show = segments.includes(segSelect.value);
+        el.classList.toggle('ef-cond-hide', !show);
+      }
+      segSelect.removeEventListener('change', update);
+      segSelect.addEventListener('change', update);
+      update();
     });
-  });
+  }
 
-  // --- Gold POS > 0 → gold EMI cell (per person) ---
-  $$('.ef-gp').forEach(inp => {
-    inp.addEventListener('input', function () {
-      tog($('#ef_ge_' + this.dataset.p), (+this.value || 0) > 0);
+  // --- Dairy income > 0 -> show cattle count ---
+  function bindDairyLogic() {
+    $$('.ef-dairy-input').forEach(inp => {
+      const person = inp.dataset.person;
+      const condEl = document.querySelector('.ef-cond-dairy[data-person="' + person + '"]');
+      if (!condEl) return;
+
+      function update() {
+        condEl.style.display = (parseFloat(inp.value) || 0) > 0 ? '' : 'none';
+      }
+      inp.removeEventListener('input', update);
+      inp.addEventListener('input', update);
+      update();
     });
+  }
+
+  // --- Property logic (plot block now handled by bindSelectConditionals via data-cond-field) ---
+  function bindPropertyLogic() {
+    // No custom logic needed
+  }
+
+  // --- Scheme -> show/hide BT section ---
+  function bindSchemeLogic() {
+    const scheme = $('#ef_INP_132');
+    const btSection = document.getElementById('acc-bt');
+    if (scheme && btSection) {
+      function updateBT() {
+        const val = (scheme.value || '').toUpperCase();
+        const isBT = val.includes('BALANCE TRANSFER') || val.includes('TOP UP');
+        btSection.classList.toggle('show', isBT);
+      }
+      scheme.removeEventListener('change', updateBT);
+      scheme.addEventListener('change', updateBT);
+      updateBT();
+    }
+  }
+
+  // --- Event listeners for count changes ---
+  if ($('#ef_CoApplicant_Count')) {
+    $('#ef_CoApplicant_Count').addEventListener('change', syncCA);
+  }
+  if ($('#ef_Guarantor_Count')) {
+    $('#ef_Guarantor_Count').addEventListener('change', syncGuarantors);
+  }
+
+  // Segment change in simulator -> rebind visibility on form
+  document.addEventListener('change', function(e) {
+    if (e.target && e.target.classList.contains('ef-segment-select')) {
+      bindSegmentVisibility();
+      bindIncomeBlockVisibility();
+    }
   });
 
-  // --- Education loan per-person: if ANY checked → show Education EMI row ---
-  $$('.ef-edu-chk').forEach(chk => {
-    chk.addEventListener('change', function () {
-      const anyEdu = [...$$('.ef-edu-chk')].some(c => c.checked);
-      tog($('#ef_tr_Edu'), anyEdu);
-    });
-  });
-
-  // Initialize on load
+  // Initial render
   syncCA();
+  syncGuarantors();
+  rebindAllLogic();
+}
+
+// =============================================
+// SIMULATOR: per-person segment list
+// =============================================
+function updateSimSegmentList() {
+  const container = document.getElementById('ef_segment_grid');
+  if (!container) return;
+
+  const segOptionsBase = '<option value="">--Select--</option><option value="Bank Salaried">Bank Salaried</option><option value="Cash Salaried">Cash Salaried</option><option value="SEP">SEP</option><option value="SENP">SENP</option>';
+  const segOptionsCoapp = segOptionsBase + '<option value="Income not considered">Income not considered</option>';
+
+  // Preserve existing values before re-rendering
+  const oldAppSeg = document.getElementById('ef_INP_003_A');
+  const oldAppVal = oldAppSeg ? oldAppSeg.value : '';
+  const caCount = +(document.getElementById('ef_CoApplicant_Count') || {}).value || 0;
+  const guarCount = +(document.getElementById('ef_Guarantor_Count') || {}).value || 0;
+  const oldCaVals = {};
+  for (let i = 1; i <= caCount; i++) {
+    const sel = document.getElementById('ef_INP_003_C' + i);
+    oldCaVals[i] = sel ? sel.value : '';
+  }
+  const oldGuarVals = {};
+  for (let i = 1; i <= guarCount; i++) {
+    const sel = document.getElementById('ef_INP_003_G' + i);
+    oldGuarVals[i] = sel ? sel.value : '';
+  }
+
+  let html = '';
+  html += '<div class="form-group"><label>Applicant <span class="sim-badge">SIM</span></label><select id="ef_INP_003_A" class="ef-segment-select">' + segOptionsBase + '</select></div>';
+
+  for (let i = 1; i <= caCount; i++) {
+    html += '<div class="form-group"><label>Co-Applicant ' + i + ' <span class="sim-badge">SIM</span></label><select id="ef_INP_003_C' + i + '" class="ef-segment-select">' + segOptionsCoapp + '</select></div>';
+  }
+
+  for (let i = 1; i <= guarCount; i++) {
+    html += '<div class="form-group"><label>Guarantor ' + i + ' <span class="sim-badge">SIM</span></label><select id="ef_INP_003_G' + i + '" class="ef-segment-select">' + segOptionsBase + '</select></div>';
+  }
+
+  container.innerHTML = html;
+
+  // Restore values
+  const newAppSeg = document.getElementById('ef_INP_003_A');
+  if (newAppSeg && oldAppVal) newAppSeg.value = oldAppVal;
+  for (let i = 1; i <= caCount; i++) {
+    const sel = document.getElementById('ef_INP_003_C' + i);
+    if (sel && oldCaVals[i]) sel.value = oldCaVals[i];
+  }
+  for (let i = 1; i <= guarCount; i++) {
+    const sel = document.getElementById('ef_INP_003_G' + i);
+    if (sel && oldGuarVals[i]) sel.value = oldGuarVals[i];
+  }
 }
 
 
@@ -1247,35 +1447,23 @@ function initExtraFields() {
 // EVENT LISTENERS
 // =============================================
 function initEventListeners() {
-  // Tab buttons
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
-  // Sidebar navigation
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     item.addEventListener('click', () => navigateToPage(item.dataset.page));
   });
 
-  // Pre-Deal: Send to CAM Sheet
   document.getElementById('btn-send-cam-sheet').addEventListener('click', handleSendToCamSheet);
-
-  // Pre-Deal: Run BRE buttons
   document.getElementById('btn-run-predeal-bre').addEventListener('click', runPreDealBREFromPage);
   document.getElementById('btn-run-predeal-bre-2').addEventListener('click', runPreDealBREFromPage);
-
-  // CAM: Send for Approval
   document.getElementById('btn-send-approval').addEventListener('click', handleSendForApproval);
-
-  // CAM: Run BRE button
   document.getElementById('btn-run-cam-bre').addEventListener('click', runCamBREFromPage);
 
-  // Modal overlay click to close
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal();
   });
-
-  // Keyboard: Escape to close modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
@@ -1285,11 +1473,20 @@ function initEventListeners() {
 // =============================================
 // INITIALIZATION
 // =============================================
+function prefillSimSegments() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  set('ef_INP_003_A', 'Bank Salaried');
+  set('ef_INP_003_C1', 'Cash Salaried');
+  set('ef_INP_003_C2', 'Bank Salaried');
+}
+
 function init() {
   initEventListeners();
   initSimulator();
   prefillExtraFields();
   initExtraFields();
+  updateSimSegmentList();
+  prefillSimSegments();
   initCamSheetChangeTracking();
   // Open directly on CAM Sheet tab
   switchTab('cam');
