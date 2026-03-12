@@ -1,5 +1,5 @@
 /* ============================================
-   OMNIFIN DIGITAL LOS - PROTOTYPE STYLES v2
+   OMNIFIN DIGITAL LOS - PROTOTYPE STYLES v3
    Design System & Component Library
    ============================================ */
 
@@ -128,6 +128,7 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
 
 /* --- Form Styles --- */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; padding: var(--spacing-md) var(--spacing-lg); }
+.form-grid.fg-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
 .form-group { padding: var(--spacing-sm) var(--spacing-md); }
 .form-group label { display: block; font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 3px; font-weight: 500; }
 .form-group label .required { color: var(--danger-red); }
@@ -243,13 +244,99 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
 .loading-text { font-size: var(--font-size-md); color: var(--text-secondary); font-weight: 500; }
 
 
-/* --- Extra Fields Page --- */
+/* --- Extra Fields Page (v3 - Card Layout) --- */
 .extra-fields-page { padding: var(--spacing-lg); }
-.extra-section { margin-bottom: var(--spacing-xl); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; }
-.extra-section .extra-section-header { background: var(--section-header-bg); padding: 8px 14px; font-weight: 600; font-size: var(--font-size-md); display: flex; align-items: center; justify-content: space-between; }
-.extra-section .extra-section-body { padding: var(--spacing-md); }
-.btn-save-section { padding: 5px 16px; background: var(--success-green); color: var(--text-white); border: none; border-radius: var(--radius-sm); font-size: var(--font-size-sm); font-weight: 600; cursor: pointer; }
-.btn-save-section:hover { background: #43a047; }
+
+.ef-card {
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.ef-card-header {
+  background: var(--section-header-bg);
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ef-card-header .ef-card-badge {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.ef-card-body {
+  padding: var(--spacing-sm) 0;
+}
+
+.ef-block-label {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--primary-purple);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 6px 14px 2px;
+  margin-top: 4px;
+  border-top: 1px solid var(--border-light);
+}
+
+.ef-block-label:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+/* Conditional visibility */
+.ef-cond { display: none; }
+.ef-cond.show { display: block; }
+.ef-cond-num { display: none; }
+.ef-cond-num.show { display: block; }
+.ef-cond-segment { display: none; }
+.ef-cond-segment.show { display: block; }
+.ef-cond-block { }
+.ef-income-block { }
+
+/* Person card for co-applicants / guarantors */
+.ef-person-card {
+  margin: 0 14px var(--spacing-md);
+  border: 1px solid #d0d7e8;
+  border-radius: var(--radius-md);
+  background: #fafbfe;
+}
+
+.ef-person-card-header {
+  background: #e8edf5;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  border-bottom: 1px solid #d0d7e8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ef-person-card-body {
+  padding: var(--spacing-sm) 0;
+}
+
+.ef-person-card-body .ef-block-label {
+  padding-left: 12px;
+}
+
+.ef-person-card-body .form-grid {
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
 
 /* --- Deviations Page --- */
 .deviations-page { padding: var(--spacing-lg); }
@@ -271,7 +358,6 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
    SIMULATOR CONTROL (v2)
    ============================================= */
 
-/* Floating toggle button */
 .sim-toggle-btn {
   position: fixed;
   bottom: 16px;
@@ -299,7 +385,6 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
   box-shadow: var(--shadow-lg);
 }
 
-/* Simulator Panel */
 .sim-panel {
   display: none;
   position: fixed;
@@ -314,9 +399,7 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
   animation: modalSlideIn 0.15s ease-out;
 }
 
-.sim-panel.active {
-  display: block;
-}
+.sim-panel.active { display: block; }
 
 .sim-panel-header {
   padding: 10px 14px;
@@ -326,181 +409,51 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
   justify-content: space-between;
 }
 
-.sim-panel-header .sim-title {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  color: var(--text-primary);
-}
+.sim-panel-header .sim-title { font-size: var(--font-size-md); font-weight: 700; color: var(--text-primary); }
 
 .sim-panel-header .sim-close {
-  width: 22px;
-  height: 22px;
-  background: var(--bg-light);
-  border: none;
-  border-radius: 50%;
-  font-size: 13px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 22px; height: 22px; background: var(--bg-light); border: none; border-radius: 50%;
+  font-size: 13px; color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
 }
+.sim-panel-header .sim-close:hover { background: var(--border-light); }
 
-.sim-panel-header .sim-close:hover {
-  background: var(--border-light);
-}
-
-.sim-panel-body {
-  padding: 14px;
-}
-
-.sim-section {
-  margin-bottom: 14px;
-}
-
-.sim-section:last-child {
-  margin-bottom: 0;
-}
+.sim-panel-body { padding: 14px; }
+.sim-section { margin-bottom: 14px; }
+.sim-section:last-child { margin-bottom: 0; }
 
 .sim-section-label {
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  font-size: var(--font-size-sm); font-weight: 700; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
 }
 
-.sim-options {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+.sim-options { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .sim-option {
-  padding: 4px 12px;
-  border-radius: 14px;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  cursor: pointer;
-  border: 1.5px solid var(--border-color);
-  background: var(--text-white);
-  color: var(--text-secondary);
-  transition: all 0.15s;
+  padding: 4px 12px; border-radius: 14px; font-size: var(--font-size-sm); font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border-color); background: var(--text-white);
+  color: var(--text-secondary); transition: all 0.15s;
 }
-
-.sim-option:hover {
-  border-color: var(--primary-blue);
-  color: var(--primary-blue);
-}
-
-.sim-option.active-passed {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-color: #4caf50;
-}
-
-.sim-option.active-failed {
-  background: #ffebee;
-  color: #c62828;
-  border-color: #e53935;
-}
-
-.sim-option.active-deviated {
-  background: #fff8e1;
-  color: #f57f17;
-  border-color: #ffc107;
-}
+.sim-option:hover { border-color: var(--primary-blue); color: var(--primary-blue); }
+.sim-option.active-passed { background: #e8f5e9; color: #2e7d32; border-color: #4caf50; }
+.sim-option.active-failed { background: #ffebee; color: #c62828; border-color: #e53935; }
+.sim-option.active-deviated { background: #fff8e1; color: #f57f17; border-color: #ffc107; }
 
 .sim-hint {
-  font-size: var(--font-size-xs);
-  color: var(--text-light);
-  margin-top: 10px;
-  text-align: center;
-  font-style: italic;
+  font-size: var(--font-size-xs); color: var(--text-light); margin-top: 10px;
+  text-align: center; font-style: italic;
 }
 
-/* --- Extra Fields - BRE Input Form Layout --- */
-.extra-fields-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+/* Extra fields table inputs (from old version, still needed for data-table contexts) */
+.extra-section .data-table select,
+.ef-card .data-table select {
+  padding: 3px 6px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm); font-family: var(--font-family);
 }
-.extra-fields-row .extra-section {
-  margin-bottom: 0;
-}
-.ef-checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 2px 12px;
-  padding: var(--spacing-sm) var(--spacing-md);
-}
-.ef-checkbox-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-}
-.ef-checkbox-item label {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  font-weight: 500;
-  cursor: pointer;
-}
-.ef-checkbox-item input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  accent-color: var(--primary-blue);
-  cursor: pointer;
-}
-.ef-cond-row { display: none; }
-.ef-cond-row.show { display: block; }
-.ef-c1, .ef-c2, .ef-c3 { display: none; }
-.ef-c1.show, .ef-c2.show, .ef-c3.show { display: table-cell; }
-.ef-ic1, .ef-ic2, .ef-ic3 { display: none; }
-.ef-ic1.show, .ef-ic2.show, .ef-ic3.show { display: table-cell; }
-.ef-group-header td {
-  background: var(--section-header-bg) !important;
-  font-weight: 600;
-  color: var(--text-primary);
-  padding: 5px 10px !important;
-  font-size: var(--font-size-sm);
-}
-.ef-cond-cell { visibility: hidden; }
-.ef-cond-cell.show { visibility: visible; }
-.ef-cond-tr { display: none; }
-.ef-cond-tr.show { display: table-row; }
-.ef-gates {
-  display: flex;
-  gap: 20px;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border-light);
-}
-.ef-bt-details { display: none; }
-.ef-bt-details.show { display: block; }
-.ef-hidden { display: none !important; }
-.extra-section .data-table select {
-  padding: 3px 6px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-family);
-}
-.extra-section .data-table input[type="number"] {
-  width: 100px;
-  padding: 3px 6px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  font-family: var(--font-family);
-  text-align: right;
-}
-.extra-section .data-table input[type="number"]:focus,
-.extra-section .data-table select:focus {
-  border-color: var(--primary-blue);
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(74,106,189,0.15);
+.extra-section .data-table input[type="number"],
+.ef-card .data-table input[type="number"] {
+  width: 100px; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm); font-family: var(--font-family); text-align: right;
 }
 
 /* --- Utility Classes --- */
@@ -522,17 +475,19 @@ input, select, textarea { font-family: var(--font-family); font-size: var(--font
 /* --- Responsive --- */
 @media (max-width: 1200px) {
   .summary-cards { grid-template-columns: repeat(3, 1fr); }
+  .form-grid.fg-4 { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 992px) {
   :root { --sidebar-width: 170px; }
   .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid.fg-4 { grid-template-columns: 1fr 1fr; }
   .summary-cards { grid-template-columns: repeat(3, 1fr); }
   .action-bar .bar-right .bar-btn span.btn-label { display: none; }
-  .extra-fields-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   :root { --sidebar-width: 160px; }
   .form-grid { grid-template-columns: 1fr; }
+  .form-grid.fg-4 { grid-template-columns: 1fr; }
   .summary-cards { grid-template-columns: repeat(2, 1fr); }
   .modal-box { max-width: 95%; }
 }
